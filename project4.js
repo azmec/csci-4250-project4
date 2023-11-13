@@ -73,7 +73,7 @@ let modelViewMatrixLoc, projectionMatrixLoc;
 // Global namespace for camera control.
 let AllInfo = {
 	// Properties controlling the camera's zoom and position.
-	zoomFactor: 1.0,
+	zoomFactor: 12,
 	translateX: 0,
 	translateY: 0,
 
@@ -102,8 +102,8 @@ function main() {
 	}
 
 	// Add and color the faces of the tetrahedron.
-	pointsArray = pointsArray.concat(TETRAHEDRON_FACES);
-	for (let i = 0; i < NUM_SIDES; i++)
+	pointsArray = pointsArray.concat(HEART_FACES);
+	for (let i = 0; i < HEART_FACES.length; i++)
 		colorsArray = colorsArray.concat(TRIANGLE_COLORS);
 
 	// Initailize the WebGL context.
@@ -293,10 +293,39 @@ function render() {
 	gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
 
 	// Draw the tetrahedron.
-	let startIdx = 0;
-	for (let i = 0; i < NUM_SIDES; i++) {
+	/*
+	for (let i = 0; i < NUM_HEART_FACES; i++) {
 		gl.drawArrays(gl.TRIANGLE_FAN, startIdx, NUM_VERTICES_PER_FACE);
 
 		startIdx += NUM_VERTICES_PER_FACE;
 	}
+	*/
+	let ySquish = 0.75;
+
+	// FRONT HALF
+	modelViewMatrix = mult(modelViewMatrix, scale4(1, ySquish, 1));
+	gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
+	gl.drawArrays(gl.TRIANGLE_FAN, 0, 7);
+	gl.drawArrays(gl.TRIANGLE_FAN, 7, 5);
+	gl.drawArrays(gl.TRIANGLE_FAN, 12, 4);
+
+	modelViewMatrix = mult(modelViewMatrix, scale4(-1, 1, 1));
+	gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
+	gl.drawArrays(gl.TRIANGLE_FAN, 0, 7);
+	gl.drawArrays(gl.TRIANGLE_FAN, 7, 5);
+	gl.drawArrays(gl.TRIANGLE_FAN, 12, 4);
+
+	// BACK HALF
+	modelViewMatrix = mult(modelViewMatrix, scale4(-1, 1, -1));
+	gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
+	gl.drawArrays(gl.TRIANGLE_FAN, 0, 7);
+	gl.drawArrays(gl.TRIANGLE_FAN, 7, 5);
+	gl.drawArrays(gl.TRIANGLE_FAN, 12, 4);
+
+	modelViewMatrix = mult(modelViewMatrix, scale4(-1, 1, 1));
+	gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
+	gl.drawArrays(gl.TRIANGLE_FAN, 0, 7);
+	gl.drawArrays(gl.TRIANGLE_FAN, 7, 5);
+	gl.drawArrays(gl.TRIANGLE_FAN, 12, 4);
+
 }
