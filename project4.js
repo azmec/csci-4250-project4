@@ -309,6 +309,15 @@ function render() {
 	gl.drawArrays(gl.TRIANGLE_FAN, 7, 5);
 	gl.drawArrays(gl.TRIANGLE_FAN, 12, 4);
 
+	// Fill the side-gap.
+	gl.drawArrays(gl.TRIANGLES, 16, 3);
+	gl.drawArrays(gl.TRIANGLE_STRIP, 19, 4);
+	gl.drawArrays(gl.TRIANGLE_STRIP, 23, 4);
+	gl.drawArrays(gl.TRIANGLES, 27, 3)
+
+	// Fill the top-gap.
+	gl.drawArrays(gl.TRIANGLES, 30, 3);
+
 	modelViewMatrix = mult(modelViewMatrix, scale4(-1, 1, 1));
 	gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
 	gl.drawArrays(gl.TRIANGLE_FAN, 0, 7);
@@ -328,4 +337,12 @@ function render() {
 	gl.drawArrays(gl.TRIANGLE_FAN, 7, 5);
 	gl.drawArrays(gl.TRIANGLE_FAN, 12, 4);
 
+	// Fill the side-gap.
+	gl.drawArrays(gl.TRIANGLES, 16, 3);
+	gl.drawArrays(gl.TRIANGLE_STRIP, 19, 4);
+	gl.drawArrays(gl.TRIANGLE_STRIP, 23, 4);
+	gl.drawArrays(gl.TRIANGLES, 27, 3)
+
+	// Fill the top-gap.
+	gl.drawArrays(gl.TRIANGLES, 30, 3);
 }
