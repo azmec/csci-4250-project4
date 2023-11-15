@@ -14,8 +14,8 @@ const ORTHO_Y_MAX =  5;
 const ORTHO_Y_MIN = -5;
 const ORTHO_X_MAX =  8;
 const ORTHO_X_MIN = -8;
-const ORTHO_NEAR  = -50;
-const ORTHO_FAR   =  50;
+const ORTHO_NEAR  = -100;
+const ORTHO_FAR   =  100;
 
 // Point at which the camera looks.
 const LOOK_AT_POINT = vec3(SCALE_FACTOR / 2.0, SCALE_FACTOR / 2.0, SCALE_FACTOR / 2.0);
