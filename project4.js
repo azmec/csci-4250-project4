@@ -4,9 +4,6 @@
  * Project 4.1
  */
 
-// Factor by which to scale the tetrahedron.
-const SCALE_FACTOR = 5.0;
-
 /*
  * Constants controlling the orthographic projection bounds.
  */
@@ -14,11 +11,11 @@ const ORTHO_Y_MAX =  5;
 const ORTHO_Y_MIN = -5;
 const ORTHO_X_MAX =  8;
 const ORTHO_X_MIN = -8;
-const ORTHO_NEAR  = -100;
-const ORTHO_FAR   =  100;
+const ORTHO_NEAR  = -50;
+const ORTHO_FAR   =  50;
 
 // Point at which the camera looks.
-const LOOK_AT_POINT = vec3(SCALE_FACTOR / 2.0, SCALE_FACTOR / 2.0, SCALE_FACTOR / 2.0);
+const LOOK_AT_POINT = vec3(0, 0, 0);
 // The relative "up" direction for the camera.
 const UP_DIRECTION  = vec3(0, 1, 0);
 
@@ -289,7 +286,6 @@ function render() {
 
 	// Scale the tetrahedron and apply view matrix.
 	modelViewMatrix = lookAt(eye, LOOK_AT_POINT, UP_DIRECTION);
-	modelViewMatrix = mult(modelViewMatrix, scale4(SCALE_FACTOR, SCALE_FACTOR, SCALE_FACTOR));
 	gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
 
 	// Draw the tetrahedron.
