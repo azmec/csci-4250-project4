@@ -25,11 +25,23 @@ const TRIANGLE_COLORS = [
 	vec4(0.0, 0.0, 1.0, 1.0),  // blue (3 right)
 ]
 
+const LIGHT_POSTIION = vec4(20, 20, 20, 0.0);
+const LIGHT_AMBIENT  = vec4(0.2, 0.2, 0.2, 1.0);
+const LIGHT_DIFFUSE  = vec4(1.0, 1.0, 1.0, 1.0);
+const LIGHT_SPECULAR = vec4(1.0, 1.0, 1.0, 1.0);
+
+const MATERIAL_AMBIENT   = vec4( 1.0, 0.1, 0.1, 1.0 );
+const MATERIAL_DIFFUSE   = vec4( 1.0, 0.1, 0.1, 1.0);
+const MATERIAL_SPECULAR  = vec4( 1.0, 1.0, 1.0, 1.0 );
+const MATERIAL_SHININESS = 100.0;
+
 let canvas, gl, program;
 
 let pointsArray = [];
 let colorsArray = [];
+let normalsArray = [];
 
+let ambientColor, diffuseColor, specularColor;
 let modelViewMatrix, projectionMatrix;
 let modelViewMatrixLoc, projectionMatrixLoc;
 
@@ -66,8 +78,10 @@ function main() {
 
 	// Add and color the faces of the tetrahedron.
 	pointsArray = pointsArray.concat(HEART_FACES);
-	for (let i = 0; i < HEART_FACES.length; i++)
+	for (let i = 0; i < HEART_FACES.length; i++) {
 		colorsArray = colorsArray.concat(TRIANGLE_COLORS);
+		normalsArray = normalsArray.concat(vec3(0.0, 1.0, 0.0));
+	}
 
 	// Initailize the WebGL context.
 	initWebGL();
@@ -102,6 +116,16 @@ function initWebGL() {
 	gl.vertexAttribPointer(vColor, 4, gl.FLOAT, false, 0, 0);
 	gl.enableVertexAttribArray(vColor);
 
+	// Initialize the normal attribute buffer.
+	let nBuffer = gl.createBuffer();
+	gl.bindBuffer(gl.ARRAY_BUFFER, nBuffer);
+	gl.bufferData(gl.ARRAY_BUFFER, flatten(normalsArray), gl.STATIC_DRAW);
+	
+	// Make normal attribute writable by buffer.
+	let vNormal = gl.getAttribLocation(program, "vNormal");
+	gl.vertexAttribPointer(vNormal, 3, gl.FLOAT, false, 0, 0);
+	gl.enableVertexAttribArray(vNormal);
+
 	// Initialize vertex attribute buffer.
 	let vBuffer = gl.createBuffer();
 	gl.bindBuffer(gl.ARRAY_BUFFER, vBuffer);
@@ -115,6 +139,18 @@ function initWebGL() {
 	// Retrieve addresses to model-view and projection matrices.
 	modelViewMatrixLoc  = gl.getUniformLocation(program, "modelViewMatrix");
 	projectionMatrixLoc = gl.getUniformLocation(program, "projectionMatrix");
+
+	// Set up light memes.
+	let ambientProduct  = mult(LIGHT_AMBIENT, MATERIAL_AMBIENT);
+	let diffuseProduct  = mult(LIGHT_DIFFUSE, MATERIAL_DIFFUSE);
+	let specularProduct = mult(LIGHT_SPECULAR, MATERIAL_SPECULAR);
+
+	gl.uniform4fv(gl.getUniformLocation(program, "ambientProduct"), flatten(ambientProduct));
+	gl.uniform4fv(gl.getUniformLocation(program, "diffuseProduct"), flatten(diffuseProduct));
+	gl.uniform4fv(gl.getUniformLocation(program, "specularProduct"), flatten(specularProduct));
+	gl.uniform4fv(gl.getUniformLocation(program, "lightPosition"), flatten(LIGHT_POSTIION));
+
+	gl.uniform1f(gl.getUniformLocation(program, "shininess"), MATERIAL_SHININESS);
 }
 
 /**
