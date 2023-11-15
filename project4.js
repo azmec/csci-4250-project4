@@ -19,40 +19,6 @@ const LOOK_AT_POINT = vec3(0, 0, 0);
 // The relative "up" direction for the camera.
 const UP_DIRECTION  = vec3(0, 1, 0);
 
-// Vertex definitions for the edge-points of a tetrahedron.
-const TETRAHEDRON_VERTICES = [
-	vec4(1.0, 1.0, 0.0, 1),
-	vec4(1.0, 0.0, 1.0, 1),
-	vec4(0.0, 1.0, 1.0, 1),
-	vec4(0.0, 0.0, 0.0, 1),
-]
-
-// Vertices for the four faces of the tetrahedron.
-const TETRAHEDRON_FACES = [
-	// If we were looking at it straight-on, the front face.
-	TETRAHEDRON_VERTICES[0],
-	TETRAHEDRON_VERTICES[1],
-	TETRAHEDRON_VERTICES[2],
-
-	// The left, unseen face.
-	TETRAHEDRON_VERTICES[0],
-	TETRAHEDRON_VERTICES[2],
-	TETRAHEDRON_VERTICES[3],
-
-	// The bottom face.
-	TETRAHEDRON_VERTICES[2],
-	TETRAHEDRON_VERTICES[1],
-	TETRAHEDRON_VERTICES[3],
-
-	// The right, unseen face.
-	TETRAHEDRON_VERTICES[0],
-	TETRAHEDRON_VERTICES[1],
-	TETRAHEDRON_VERTICES[3],
-];
-
-const NUM_VERTICES_PER_FACE = 3;
-const NUM_SIDES = 4;
-
 const TRIANGLE_COLORS = [
 	vec4(1.0, 0.0, 0.0, 1.0),  // red (0 front)
 	vec4(0.0, 1.0, 0.0, 1.0),  // green (2)
@@ -288,14 +254,6 @@ function render() {
 	modelViewMatrix = lookAt(eye, LOOK_AT_POINT, UP_DIRECTION);
 	gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
 
-	// Draw the tetrahedron.
-	/*
-	for (let i = 0; i < NUM_HEART_FACES; i++) {
-		gl.drawArrays(gl.TRIANGLE_FAN, startIdx, NUM_VERTICES_PER_FACE);
-
-		startIdx += NUM_VERTICES_PER_FACE;
-	}
-	*/
 	let ySquish = 0.75;
 
 	// FRONT HALF
