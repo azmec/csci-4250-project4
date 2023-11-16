@@ -80,7 +80,14 @@ function main() {
 	pointsArray = pointsArray.concat(HEART_FACES);
 	for (let i = 0; i < HEART_FACES.length; i++) {
 		colorsArray = colorsArray.concat(TRIANGLE_COLORS);
-		normalsArray = normalsArray.concat(vec3(0.0, 1.0, 0.0));
+	}
+	for (let i = 0; i < NUM_HEART_FACES; i++) {
+		let j = i * 3;
+		let facePoints = [HEART_FACES[j], HEART_FACES[j + 1], HEART_FACES[j + 2]];
+		let normal = newell(facePoints);
+		normalsArray.push(normal);
+		normalsArray.push(normal);
+		normalsArray.push(normal);
 	}
 
 	// Initailize the WebGL context.
@@ -265,6 +272,20 @@ function scale4(sx, sy, sz) {
 	return matrix;
 }
 
+function newell(vertices) {
+	let length = vertices.length;
+	let x = 0, y = 0, z = 0;
+	for (let i = 0; i < length; i++) {
+		let next = (i + 1) % length;
+
+		x += (vertices[i][1] - vertices[next][1]) * (vertices[i][2] + vertices[next][2]);
+		y += (vertices[i][2] - vertices[next][2]) * (vertices[i][0] + vertices[next][0]);
+		z += (vertices[i][0] - vertices[next][0]) * (vertices[i][1] + vertices[next][1]);
+	}
+
+	return normalize(vec3(x, y, z));
+}
+
 function render() {
 	gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
@@ -295,44 +316,28 @@ function render() {
 	// FRONT HALF
 	modelViewMatrix = mult(modelViewMatrix, scale4(1, ySquish, 1));
 	gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
-	gl.drawArrays(gl.TRIANGLE_FAN, 0, 7);
-	gl.drawArrays(gl.TRIANGLE_FAN, 7, 5);
-	gl.drawArrays(gl.TRIANGLE_FAN, 12, 4);
+	for (let i = 0; i < NUM_HEART_FACES; i++) {
+		gl.drawArrays(gl.TRIANGLES, i * 3, 3);
 
-	// Fill the side-gap.
-	gl.drawArrays(gl.TRIANGLES, 16, 3);
-	gl.drawArrays(gl.TRIANGLE_STRIP, 19, 4);
-	gl.drawArrays(gl.TRIANGLE_STRIP, 23, 4);
-	gl.drawArrays(gl.TRIANGLES, 27, 3)
-
-	// Fill the top-gap.
-	gl.drawArrays(gl.TRIANGLES, 30, 3);
-
+	}
 	modelViewMatrix = mult(modelViewMatrix, scale4(-1, 1, 1));
 	gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
-	gl.drawArrays(gl.TRIANGLE_FAN, 0, 7);
-	gl.drawArrays(gl.TRIANGLE_FAN, 7, 5);
-	gl.drawArrays(gl.TRIANGLE_FAN, 12, 4);
+	for (let i = 0; i < NUM_HEART_FACES; i++) {
+		gl.drawArrays(gl.TRIANGLES, i * 3, 3);
+
+	}
 
 	// BACK HALF
 	modelViewMatrix = mult(modelViewMatrix, scale4(-1, 1, -1));
 	gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
-	gl.drawArrays(gl.TRIANGLE_FAN, 0, 7);
-	gl.drawArrays(gl.TRIANGLE_FAN, 7, 5);
-	gl.drawArrays(gl.TRIANGLE_FAN, 12, 4);
+	for (let i = 0; i < NUM_HEART_FACES; i++) {
+		gl.drawArrays(gl.TRIANGLES, i * 3, 3);
 
+	}
 	modelViewMatrix = mult(modelViewMatrix, scale4(-1, 1, 1));
 	gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
-	gl.drawArrays(gl.TRIANGLE_FAN, 0, 7);
-	gl.drawArrays(gl.TRIANGLE_FAN, 7, 5);
-	gl.drawArrays(gl.TRIANGLE_FAN, 12, 4);
+	for (let i = 0; i < NUM_HEART_FACES; i++) {
+		gl.drawArrays(gl.TRIANGLES, i * 3, 3);
 
-	// Fill the side-gap.
-	gl.drawArrays(gl.TRIANGLES, 16, 3);
-	gl.drawArrays(gl.TRIANGLE_STRIP, 19, 4);
-	gl.drawArrays(gl.TRIANGLE_STRIP, 23, 4);
-	gl.drawArrays(gl.TRIANGLES, 27, 3)
-
-	// Fill the top-gap.
-	gl.drawArrays(gl.TRIANGLES, 30, 3);
+	}
 }
