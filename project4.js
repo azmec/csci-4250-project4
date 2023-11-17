@@ -276,6 +276,11 @@ function scale4(sx, sy, sz) {
 	return matrix;
 }
 
+/**
+ * Return the normal for the polygon represented by the given vertices.
+ * @param {Array} List of vertices defining the polygon.
+ * @returns The `vec3` representing the normal of the polygon.
+ */
 function newell(vertices) {
 	let length = vertices.length;
 	let x = 0, y = 0, z = 0;
