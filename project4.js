@@ -311,11 +311,13 @@ function render() {
 		AllInfo.radius * Math.sin(AllInfo.phi)
 	);
 
-	// Scale the tetrahedron and apply view matrix.
+	// Set the position of the eye.
 	modelViewMatrix = lookAt(eye, LOOK_AT_POINT, UP_DIRECTION);
 	gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
 
 	let startIdx = 0;
+
+	// Draw the three-dimensional heart.
 	drawHeart(startIdx);
 	startIdx += HEART_FACES.length;
 }
