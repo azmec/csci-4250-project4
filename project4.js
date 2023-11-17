@@ -26,24 +26,28 @@ const TRIANGLE_COLORS = [
 ]
 
 const LIGHT_POSTIION = vec4(20, 20, 20, 0.0);
-const LIGHT_AMBIENT  = vec4(0.2, 0.2, 0.2, 1.0);
-const LIGHT_DIFFUSE  = vec4(1.0, 1.0, 1.0, 1.0);
-const LIGHT_SPECULAR = vec4(1.0, 1.0, 1.0, 1.0);
+const LIGHT_AMBIENT  = vec4(0.1, 0.1, 0.1, 1.0);
+const LIGHT_DIFFUSE  = vec4(0.8, 0.5, 0.5, 1.0);
+const LIGHT_SPECULAR = vec4(0.0, 1.0, 1.0, 1.0);
 
-const MATERIAL_AMBIENT   = vec4( 1.0, 0.1, 0.1, 1.0 );
+const MATERIAL_AMBIENT   = vec4( 1.0, 0.0, 0.0, 1.0 );
 const MATERIAL_DIFFUSE   = vec4( 1.0, 0.1, 0.1, 1.0);
 const MATERIAL_SPECULAR  = vec4( 1.0, 1.0, 1.0, 1.0 );
-const MATERIAL_SHININESS = 100.0;
+const MATERIAL_SHININESS = 30.0;
 
-let canvas, gl, program;
+let canvas, program;
 
 let pointsArray = [];
 let colorsArray = [];
 let normalsArray = [];
 
 let ambientColor, diffuseColor, specularColor;
-let modelViewMatrix, projectionMatrix;
-let modelViewMatrixLoc, projectionMatrixLoc;
+let projectionMatrix, projectionMatrixLoc;
+
+var gl;
+
+var modelViewMatrix, modelViewMatrixLoc;
+var matrixStack = [];
 
 // Global namespace for camera control.
 let AllInfo = {
@@ -311,33 +315,7 @@ function render() {
 	modelViewMatrix = lookAt(eye, LOOK_AT_POINT, UP_DIRECTION);
 	gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
 
-	let ySquish = 0.75;
-
-	// FRONT HALF
-	modelViewMatrix = mult(modelViewMatrix, scale4(1, ySquish, 1));
-	gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
-	for (let i = 0; i < NUM_HEART_FACES; i++) {
-		gl.drawArrays(gl.TRIANGLES, i * 3, 3);
-
-	}
-	modelViewMatrix = mult(modelViewMatrix, scale4(-1, 1, 1));
-	gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
-	for (let i = 0; i < NUM_HEART_FACES; i++) {
-		gl.drawArrays(gl.TRIANGLES, i * 3, 3);
-
-	}
-
-	// BACK HALF
-	modelViewMatrix = mult(modelViewMatrix, scale4(-1, 1, -1));
-	gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
-	for (let i = 0; i < NUM_HEART_FACES; i++) {
-		gl.drawArrays(gl.TRIANGLES, i * 3, 3);
-
-	}
-	modelViewMatrix = mult(modelViewMatrix, scale4(-1, 1, 1));
-	gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
-	for (let i = 0; i < NUM_HEART_FACES; i++) {
-		gl.drawArrays(gl.TRIANGLES, i * 3, 3);
-
-	}
+	let startIdx = 0;
+	drawHeart(startIdx);
+	startIdx += HEART_FACES.length;
 }

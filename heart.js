@@ -1,5 +1,5 @@
-const MID_RADIUS = 3;
 const NUM_HEART_FACES = 17;
+const HEART_SCALE_Y = 3 / 4;
 
 /*
  * Letter constants to notate faces and points.
@@ -119,3 +119,29 @@ const HEART_FACES = [
 	HEART_VERTICES[B],
 	HEART_VERTICES[H],
 ]
+
+function drawHeart(startIdx) {
+	matrixStack.push(modelViewMatrix);
+
+	// FRONT HALF
+	modelViewMatrix = mult(modelViewMatrix, scale4(1, HEART_SCALE_Y, 1));
+	gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
+	for (let i = startIdx; i < HEART_FACES.length; i += 3)
+		gl.drawArrays(gl.TRIANGLES, i, 3);
+
+	modelViewMatrix = mult(modelViewMatrix, scale4(-1, 1, 1));
+	gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
+	for (let i = startIdx; i < HEART_FACES.length; i += 3)
+		gl.drawArrays(gl.TRIANGLES, i, 3);
+
+	// BACK HALF
+	modelViewMatrix = mult(modelViewMatrix, scale4(-1, 1, -1));
+	gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
+	for (let i = startIdx; i < HEART_FACES.length; i += 3)
+		gl.drawArrays(gl.TRIANGLES, i, 3);
+
+	modelViewMatrix = mult(modelViewMatrix, scale4(-1, 1, 1));
+	gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
+	for (let i = startIdx; i < HEART_FACES.length; i += 3)
+		gl.drawArrays(gl.TRIANGLES, i, 3);
+}
