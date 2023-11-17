@@ -33,10 +33,8 @@ const LIGHT_SPECULAR = vec4(0.0, 1.0, 1.0, 1.0);
 let canvas, program;
 
 let pointsArray = [];
-let colorsArray = [];
 let normalsArray = [];
 
-let ambientColor, diffuseColor, specularColor;
 let ambientProductLoc, diffuseProductLoc, specularProductLoc;
 let lightPositionLoc, shininessLoc;
 
@@ -80,9 +78,6 @@ function main() {
 
 	// Add and color the faces of the tetrahedron.
 	pointsArray = pointsArray.concat(HEART_FACES);
-	for (let i = 0; i < HEART_FACES.length; i++) {
-		colorsArray = colorsArray.concat(TRIANGLE_COLORS);
-	}
 	for (let i = 0; i < NUM_HEART_FACES; i++) {
 		let j = i * 3;
 		let facePoints = [HEART_FACES[j], HEART_FACES[j + 1], HEART_FACES[j + 2]];
@@ -114,16 +109,6 @@ function initWebGL() {
 	//  Load shaders.
 	program = initShaders(gl, "vertex-shader", "fragment-shader");
 	gl.useProgram(program);
-
-	// Initialize the color attribute buffer.
-	let cBuffer = gl.createBuffer();
-	gl.bindBuffer(gl.ARRAY_BUFFER, cBuffer);
-	gl.bufferData(gl.ARRAY_BUFFER, flatten(colorsArray), gl.STATIC_DRAW);
-
-	// Make color attribute writable by buffer.
-	let vColor = gl.getAttribLocation(program, "vColor");
-	gl.vertexAttribPointer(vColor, 4, gl.FLOAT, false, 0, 0);
-	gl.enableVertexAttribArray(vColor);
 
 	// Initialize the normal attribute buffer.
 	let nBuffer = gl.createBuffer();
