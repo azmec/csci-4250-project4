@@ -159,15 +159,23 @@ function initWebGL() {
 	gl.uniform4fv(gl.getUniformLocation(program, "lightPosition"), flatten(LIGHT_POSTIION));
 }
 
+/**
+ * Configure WebGL to render objects according to given material properties.
+ * @param {vec4}   ambient   The ambient material property.
+ * @param {vec4}   diffuse   The diffuse material property.
+ * @param {vec4}   specular  The specular material property.
+ * @param {number} shininess The object's shininess property.
+ */
 function setMaterial(ambient, diffuse, specular, shininess) {
+	// Combute the products given by the material.
 	let ambientProduct  = mult(LIGHT_AMBIENT, ambient);
 	let diffuseProduct  = mult(LIGHT_DIFFUSE, diffuse);
 	let specularProduct = mult(LIGHT_SPECULAR, specular);
 
+	// Write the new material properties into the vertex shader.
 	gl.uniform4fv(ambientProductLoc, flatten(ambientProduct));
 	gl.uniform4fv(diffuseProductLoc, flatten(diffuseProduct));
 	gl.uniform4fv(specularProductLoc, flatten(specularProduct));
-
 	gl.uniform1f(shininessLoc, shininess);
 }
 
