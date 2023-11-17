@@ -125,6 +125,11 @@ const HEART_FACES = [
 	HEART_VERTICES[H],
 ]
 
+/**
+ * Draw a three-dimensional heart.
+ * @param {number} startIdx The index in the global points array at which the
+ *                          heart's vertices begin.
+ */
 function drawHeart(startIdx) {
 	setMaterial(
 		HEART_MATERIAL_AMBIENT, HEART_MATERIAL_DIFFUSE, 
