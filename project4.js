@@ -30,11 +30,6 @@ const LIGHT_AMBIENT  = vec4(0.1, 0.1, 0.1, 1.0);
 const LIGHT_DIFFUSE  = vec4(0.8, 0.5, 0.5, 1.0);
 const LIGHT_SPECULAR = vec4(0.0, 1.0, 1.0, 1.0);
 
-const MATERIAL_AMBIENT   = vec4( 1.0, 0.0, 0.0, 1.0 );
-const MATERIAL_DIFFUSE   = vec4( 1.0, 0.1, 0.1, 1.0);
-const MATERIAL_SPECULAR  = vec4( 1.0, 1.0, 1.0, 1.0 );
-const MATERIAL_SHININESS = 30.0;
-
 let canvas, program;
 
 let pointsArray = [];
@@ -42,6 +37,9 @@ let colorsArray = [];
 let normalsArray = [];
 
 let ambientColor, diffuseColor, specularColor;
+let ambientProductLoc, diffuseProductLoc, specularProductLoc;
+let lightPositionLoc, shininessLoc;
+
 let projectionMatrix, projectionMatrixLoc;
 
 var gl;
@@ -151,17 +149,26 @@ function initWebGL() {
 	modelViewMatrixLoc  = gl.getUniformLocation(program, "modelViewMatrix");
 	projectionMatrixLoc = gl.getUniformLocation(program, "projectionMatrix");
 
-	// Set up light memes.
-	let ambientProduct  = mult(LIGHT_AMBIENT, MATERIAL_AMBIENT);
-	let diffuseProduct  = mult(LIGHT_DIFFUSE, MATERIAL_DIFFUSE);
-	let specularProduct = mult(LIGHT_SPECULAR, MATERIAL_SPECULAR);
-
-	gl.uniform4fv(gl.getUniformLocation(program, "ambientProduct"), flatten(ambientProduct));
-	gl.uniform4fv(gl.getUniformLocation(program, "diffuseProduct"), flatten(diffuseProduct));
-	gl.uniform4fv(gl.getUniformLocation(program, "specularProduct"), flatten(specularProduct));
+	// Retrieve addresses to light/shading properties.
+	ambientProductLoc = gl.getUniformLocation(program, "ambientProduct");
+	diffuseProductLoc = gl.getUniformLocation(program, "diffuseProduct");
+	specularProductLoc = gl.getUniformLocation(program, "specularProduct");
+	shininessLoc = gl.getUniformLocation(program, "shininess");
+	
+	// Set the position of the global light.
 	gl.uniform4fv(gl.getUniformLocation(program, "lightPosition"), flatten(LIGHT_POSTIION));
+}
 
-	gl.uniform1f(gl.getUniformLocation(program, "shininess"), MATERIAL_SHININESS);
+function setMaterial(ambient, diffuse, specular, shininess) {
+	let ambientProduct  = mult(LIGHT_AMBIENT, ambient);
+	let diffuseProduct  = mult(LIGHT_DIFFUSE, diffuse);
+	let specularProduct = mult(LIGHT_SPECULAR, specular);
+
+	gl.uniform4fv(ambientProductLoc, flatten(ambientProduct));
+	gl.uniform4fv(diffuseProductLoc, flatten(diffuseProduct));
+	gl.uniform4fv(specularProductLoc, flatten(specularProduct));
+
+	gl.uniform1f(shininessLoc, shininess);
 }
 
 /**

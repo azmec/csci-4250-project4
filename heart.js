@@ -1,6 +1,11 @@
 const NUM_HEART_FACES = 17;
 const HEART_SCALE_Y = 3 / 4;
 
+const HEART_MATERIAL_AMBIENT   = vec4( 1.0, 0.0, 0.0, 1.0 );
+const HEART_MATERIAL_DIFFUSE   = vec4( 1.0, 0.1, 0.1, 1.0);
+const HEART_MATERIAL_SPECULAR  = vec4( 1.0, 1.0, 1.0, 1.0 );
+const HEART_MATERIAL_SHININESS = 30.0;
+
 /*
  * Letter constants to notate faces and points.
  * Given a drawing, this makes the below easier to parse for humans.
@@ -121,6 +126,10 @@ const HEART_FACES = [
 ]
 
 function drawHeart(startIdx) {
+	setMaterial(
+		HEART_MATERIAL_AMBIENT, HEART_MATERIAL_DIFFUSE, 
+		HEART_MATERIAL_SPECULAR, HEART_MATERIAL_SHININESS
+	);
 	matrixStack.push(modelViewMatrix);
 
 	// FRONT HALF
