@@ -140,22 +140,18 @@ function drawHeart(startIdx) {
 	// FRONT HALF
 	modelViewMatrix = mult(modelViewMatrix, scale4(1, HEART_SCALE_Y, 1));
 	gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
-	for (let i = startIdx; i < HEART_FACES.length; i += 3)
-		gl.drawArrays(gl.TRIANGLES, i, 3);
+	gl.drawArrays(gl.TRIANGLES, startIdx, HEART_FACES.length);
 
 	modelViewMatrix = mult(modelViewMatrix, scale4(-1, 1, 1));
 	gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
-	for (let i = startIdx; i < HEART_FACES.length; i += 3)
-		gl.drawArrays(gl.TRIANGLES, i, 3);
+	gl.drawArrays(gl.TRIANGLES, startIdx, HEART_FACES.length);
 
 	// BACK HALF
 	modelViewMatrix = mult(modelViewMatrix, scale4(-1, 1, -1));
 	gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
-	for (let i = startIdx; i < HEART_FACES.length; i += 3)
-		gl.drawArrays(gl.TRIANGLES, i, 3);
+	gl.drawArrays(gl.TRIANGLES, startIdx, HEART_FACES.length);
 
 	modelViewMatrix = mult(modelViewMatrix, scale4(-1, 1, 1));
 	gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
-	for (let i = startIdx; i < HEART_FACES.length; i += 3)
-		gl.drawArrays(gl.TRIANGLES, i, 3);
+	gl.drawArrays(gl.TRIANGLES, startIdx, HEART_FACES.length);
 }
