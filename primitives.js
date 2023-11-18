@@ -1,12 +1,12 @@
 const CUBE_VERTICES = [
-	vec4(-1, -1,  1, 1),
-	vec4(-1,  1,  1, 1),
-	vec4( 1,  1,  1, 1),
-	vec4( 1, -1,  1, 1),
-	vec4(-1, -1, -1, 1),
-	vec4(-1,  1, -1, 1),
-	vec4( 1,  1, -1, 1),
-	vec4( 1, -1, -1, 1)
+	vec4(-1, -1,  1, 1), // A
+	vec4(-1,  1,  1, 1), // B
+	vec4( 1,  1,  1, 1), // C
+	vec4( 1, -1,  1, 1), // D
+	vec4(-1, -1, -1, 1), // E
+	vec4(-1,  1, -1, 1), // F
+	vec4( 1,  1, -1, 1), // G
+	vec4( 1, -1, -1, 1)  // H
 ];
 
 export const CUBE_FACES = [
@@ -29,7 +29,7 @@ export const CUBE_FACES = [
 	// The left face.
 	CUBE_VERTICES[F],
 	CUBE_VERTICES[E],
-	CUBE_VERTICES[B],
+	CUBE_VERTICES[A],
 	CUBE_VERTICES[F],
 	CUBE_VERTICES[A],
 	CUBE_VERTICES[B],
@@ -51,12 +51,12 @@ export const CUBE_FACES = [
 	CUBE_VERTICES[G],
 
 	// The bottom face.
-	CUBE_VERTICES[H],
 	CUBE_VERTICES[D],
 	CUBE_VERTICES[A],
-	CUBE_VERTICES[H],
+	CUBE_VERTICES[E],
 	CUBE_VERTICES[D],
 	CUBE_VERTICES[E],
+	CUBE_VERTICES[H],
 ];
 
 export function drawCube(offset) {
