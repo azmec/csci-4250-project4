@@ -4,6 +4,8 @@
  * Project 4.1
  */
 
+import * as Primitives from "./primitives.js";
+
 /*
  * Constants controlling the orthographic projection bounds.
  */
@@ -19,31 +21,14 @@ const LOOK_AT_POINT = vec3(0, 0, 0);
 // The relative "up" direction for the camera.
 const UP_DIRECTION  = vec3(0, 1, 0);
 
-const TRIANGLE_COLORS = [
-	vec4(1.0, 0.0, 0.0, 1.0),  // red (0 front)
-	vec4(0.0, 1.0, 0.0, 1.0),  // green (2)
-	vec4(0.0, 0.0, 1.0, 1.0),  // blue (3 right)
-]
-
 const LIGHT_POSTIION = vec4(20, 20, 20, 0.0);
-const LIGHT_AMBIENT  = vec4(0.1, 0.1, 0.1, 1.0);
-const LIGHT_DIFFUSE  = vec4(0.8, 0.5, 0.5, 1.0);
-const LIGHT_SPECULAR = vec4(0.0, 1.0, 1.0, 1.0);
 
 let canvas, program;
 
 let pointsArray = [];
 let normalsArray = [];
 
-let ambientProductLoc, diffuseProductLoc, specularProductLoc;
-let lightPositionLoc, shininessLoc;
-
 let projectionMatrix, projectionMatrixLoc;
-
-var gl;
-
-var modelViewMatrix, modelViewMatrixLoc;
-var matrixStack = [];
 
 // Global namespace for camera control.
 let AllInfo = {
@@ -82,6 +67,16 @@ function main() {
 		let j = i * 3;
 		let facePoints = [HEART_FACES[j], HEART_FACES[j + 1], HEART_FACES[j + 2]];
 		let normal = newell(facePoints);
+		normalsArray.push(normal);
+		normalsArray.push(normal);
+		normalsArray.push(normal);
+	}
+
+	pointsArray = pointsArray.concat(Primitives.CUBE_FACES);
+	for (let i = 0; i < Primitives.CUBE_FACES.length; i += 3) {
+		let facePoints = Primitives.CUBE_FACES.slice(i, i + 3);
+		let normal = newell(facePoints);
+
 		normalsArray.push(normal);
 		normalsArray.push(normal);
 		normalsArray.push(normal);
@@ -142,26 +137,6 @@ function initWebGL() {
 	
 	// Set the position of the global light.
 	gl.uniform4fv(gl.getUniformLocation(program, "lightPosition"), flatten(LIGHT_POSTIION));
-}
-
-/**
- * Configure WebGL to render objects according to given material properties.
- * @param {vec4}   ambient   The ambient material property.
- * @param {vec4}   diffuse   The diffuse material property.
- * @param {vec4}   specular  The specular material property.
- * @param {number} shininess The object's shininess property.
- */
-function setMaterial(ambient, diffuse, specular, shininess) {
-	// Combute the products given by the material.
-	let ambientProduct  = mult(LIGHT_AMBIENT, ambient);
-	let diffuseProduct  = mult(LIGHT_DIFFUSE, diffuse);
-	let specularProduct = mult(LIGHT_SPECULAR, specular);
-
-	// Write the new material properties into the vertex shader.
-	gl.uniform4fv(ambientProductLoc, flatten(ambientProduct));
-	gl.uniform4fv(diffuseProductLoc, flatten(diffuseProduct));
-	gl.uniform4fv(specularProductLoc, flatten(specularProduct));
-	gl.uniform1f(shininessLoc, shininess);
 }
 
 /**
@@ -261,22 +236,6 @@ function initHtmlButtons() {
 }
 
 /**
- * Compute the scale matrix described by the scale factors.
- *
- * @param {number} sx - Factor by which to scale the x-axis.
- * @param {number} sy - Factor by which to scale the y-axis.
- * @param {number} sz - Factor by which to scale the z-axis.
- */
-function scale4(sx, sy, sz) {
-	let matrix = mat4();
-	matrix[0][0] = sx;
-	matrix[1][1] = sy;
-	matrix[2][2] = sz;
-
-	return matrix;
-}
-
-/**
  * Return the normal for the polygon represented by the given vertices.
  * @param {Array} List of vertices defining the polygon.
  * @returns The `vec3` representing the normal of the polygon.
@@ -325,4 +284,8 @@ function render() {
 	// Draw the three-dimensional heart.
 	drawHeart(startIdx);
 	startIdx += HEART_FACES.length;
+
+	Primitives.drawCube(startIdx);
 }
+
+window.main = main;
