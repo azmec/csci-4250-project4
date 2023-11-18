@@ -82,6 +82,18 @@ function main() {
 		normalsArray.push(normal);
 	}
 
+	let cylinderPoints = Primitives.generateCylinderVertices(1.0, 3.0);
+	pointsArray = pointsArray.concat(cylinderPoints);
+	for (let i = 0; i < cylinderPoints.length; i += 3) {
+		let facePoints = cylinderPoints.slice(i, i + 3);
+		let normal = newell(facePoints);
+
+		normalsArray.push(normal);
+		normalsArray.push(normal);
+		normalsArray.push(normal);
+
+	}
+
 	// Initailize the WebGL context.
 	initWebGL();
 
@@ -285,10 +297,20 @@ function render() {
 	drawHeart(startIdx);
 	startIdx += HEART_FACES.length;
 
+	matrixStack.push(modelViewMatrix);
 	modelViewMatrix = mult(modelViewMatrix, translate(0, 0, 15));
 	modelViewMatrix = mult(modelViewMatrix, scale4(5, 5, 5));
 	gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
 	Primitives.drawCube(startIdx);
+	modelViewMatrix = matrixStack.pop();
+	gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
+
+	startIdx += Primitives.CUBE_FACES.length;
+
+	modelViewMatrix = mult(modelViewMatrix, translate(0, 0, -15));
+	modelViewMatrix = mult(modelViewMatrix, scale4(5, 5, 5));
+	gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
+	gl.drawArrays(gl.TRIANGLES, startIdx, 1728);
 }
 
 window.main = main;
