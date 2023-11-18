@@ -1,3 +1,8 @@
+const SHRINE_MATERIAL_AMBIENT   = vec4( 0.5, 0.5, 0.5, 1.0 );
+const SHRINE_MATERIAL_DIFFUSE   = vec4( 0.5, 0.5, 0.5, 1.0);
+const SHRINE_MATERIAL_SPECULAR  = vec4( 0.3, 0.3, 0.3, 1.0 );
+const SHRINE_MATERIAL_SHININESS = 10.0;
+
 function generateShrineVertices() {
 	let vertices = [];
 	vertices = vertices.concat(CUBE_FACES);
@@ -7,6 +12,11 @@ function generateShrineVertices() {
 }
 
 function drawShrine(offset) {
+	setMaterial(
+		SHRINE_MATERIAL_AMBIENT, SHRINE_MATERIAL_DIFFUSE, 
+		SHRINE_MATERIAL_SPECULAR, SHRINE_MATERIAL_SHININESS
+	);
+
 	matrixStack.push(modelViewMatrix);
 	modelViewMatrix = mult(modelViewMatrix, translate(0, -8.5, 0));
 	modelViewMatrix = mult(modelViewMatrix, scale4(5.5, 0.5, 5.5));
