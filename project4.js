@@ -33,7 +33,7 @@ let projectionMatrix, projectionMatrixLoc;
 // Global namespace for camera control.
 let AllInfo = {
 	// Properties controlling the camera's zoom and position.
-	zoomFactor: 12,
+	zoomFactor: 5,
 	translateX: 0,
 	translateY: 0,
 
