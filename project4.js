@@ -4,8 +4,6 @@
  * Project 4.1
  */
 
-import * as Primitives from "./primitives.js";
-
 /*
  * Constants controlling the orthographic projection bounds.
  */
@@ -72,20 +70,10 @@ function main() {
 		normalsArray.push(normal);
 	}
 
-	pointsArray = pointsArray.concat(Primitives.CUBE_FACES);
-	for (let i = 0; i < Primitives.CUBE_FACES.length; i += 3) {
-		let facePoints = Primitives.CUBE_FACES.slice(i, i + 3);
-		let normal = newell(facePoints);
-
-		normalsArray.push(normal);
-		normalsArray.push(normal);
-		normalsArray.push(normal);
-	}
-
-	let cylinderPoints = Primitives.generateCylinderVertices(1.0, 3.0);
-	pointsArray = pointsArray.concat(cylinderPoints);
-	for (let i = 0; i < cylinderPoints.length; i += 3) {
-		let facePoints = cylinderPoints.slice(i, i + 3);
+	let shrinePoints = generateShrineVertices();
+	pointsArray = pointsArray.concat(shrinePoints);
+	for (let i = 0; i < shrinePoints.length; i += 3) {
+		let facePoints = shrinePoints.slice(i, i + 3);
 		let normal = newell(facePoints);
 
 		normalsArray.push(normal);
@@ -294,23 +282,13 @@ function render() {
 	let startIdx = 0;
 
 	// Draw the three-dimensional heart.
+	matrixStack.push(modelViewMatrix);
+	modelViewMatrix = mult(modelViewMatrix, translate(0, 20, 0));
+	modelViewMatrix = mult(modelViewMatrix, scale4(0.5, 0.5, 0.5));
 	drawHeart(startIdx);
+	modelViewMatrix = matrixStack.pop();
+
 	startIdx += HEART_FACES.length;
 
-	matrixStack.push(modelViewMatrix);
-	modelViewMatrix = mult(modelViewMatrix, translate(0, 0, 15));
-	modelViewMatrix = mult(modelViewMatrix, scale4(5, 5, 5));
-	gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
-	Primitives.drawCube(startIdx);
-	modelViewMatrix = matrixStack.pop();
-	gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
-
-	startIdx += Primitives.CUBE_FACES.length;
-
-	modelViewMatrix = mult(modelViewMatrix, translate(0, 0, -15));
-	modelViewMatrix = mult(modelViewMatrix, scale4(5, 5, 5));
-	gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
-	gl.drawArrays(gl.TRIANGLES, startIdx, 1728);
+	drawShrine(startIdx);
 }
-
-window.main = main;

@@ -9,7 +9,7 @@ const CUBE_VERTICES = [
 	vec4( 1, -1, -1, 1)  // H
 ];
 
-export const CUBE_FACES = [
+const CUBE_FACES = [
 	// The front face.
 	CUBE_VERTICES[B],
 	CUBE_VERTICES[A],
@@ -59,11 +59,11 @@ export const CUBE_FACES = [
 	CUBE_VERTICES[H],
 ];
 
-export function drawCube(offset) {
+function drawCube(offset) {
 	gl.drawArrays(gl.TRIANGLES, offset, CUBE_FACES.length);
 }
 
-export function generateCylinderVertices(radius, height) {
+function generateCylinderVertices(radius, height) {
 	let half = [];
 	for (let i = 0; i < 25; i++) {
 		half.push(vec4(radius, height * i / 24, 0, 1.0));
@@ -100,6 +100,10 @@ export function generateCylinderVertices(radius, height) {
 	}
 
 	return vertices;
+}
+
+function drawCylinder(offset) {
+	gl.drawArrays(gl.TRIANGLES, offset, 1728);
 }
 
 function multiply(m, v) {
