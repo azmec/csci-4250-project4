@@ -1,5 +1,5 @@
 const NUM_HEART_FACES = 17;
-const HEART_SCALE_Y = 3 / 4;
+const HEART_SCALE_Y = 5 / 4;
 
 const HEART_MATERIAL_AMBIENT   = vec4( 1.0, 0.0, 0.0, 1.0 );
 const HEART_MATERIAL_DIFFUSE   = vec4( 1.0, 0.1, 0.1, 1.0);
@@ -154,4 +154,7 @@ function drawHeart(startIdx) {
 	modelViewMatrix = mult(modelViewMatrix, scale4(-1, 1, 1));
 	gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
 	gl.drawArrays(gl.TRIANGLES, startIdx, HEART_FACES.length);
+
+	modelViewMatrix = matrixStack.pop();
+	gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
 }

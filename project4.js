@@ -9,8 +9,8 @@ import * as Primitives from "./primitives.js";
 /*
  * Constants controlling the orthographic projection bounds.
  */
-const ORTHO_Y_MAX =  5;
-const ORTHO_Y_MIN = -5;
+const ORTHO_Y_MAX =  8;
+const ORTHO_Y_MIN = -8;
 const ORTHO_X_MAX =  8;
 const ORTHO_X_MIN = -8;
 const ORTHO_NEAR  = -50;
@@ -285,6 +285,9 @@ function render() {
 	drawHeart(startIdx);
 	startIdx += HEART_FACES.length;
 
+	modelViewMatrix = mult(modelViewMatrix, translate(0, 0, 15));
+	modelViewMatrix = mult(modelViewMatrix, scale4(5, 5, 5));
+	gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
 	Primitives.drawCube(startIdx);
 }
 
