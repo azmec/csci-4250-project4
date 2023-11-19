@@ -1,16 +1,34 @@
-const SHRINE_MATERIAL_AMBIENT   = vec4( 0.5, 0.5, 0.5, 1.0 );
-const SHRINE_MATERIAL_DIFFUSE   = vec4( 0.5, 0.5, 0.5, 1.0);
-const SHRINE_MATERIAL_SPECULAR  = vec4( 0.3, 0.3, 0.3, 1.0 );
+/**
+ * Carlos Aldana Lira
+ * CSCI 4250-D01
+ *
+ * Vertex and face definitions and drawing functions for a shrine/pedestal.
+ */
+
+const SHRINE_MATERIAL_AMBIENT   = vec4(0.5, 0.5, 0.5, 1.0);
+const SHRINE_MATERIAL_DIFFUSE   = vec4(0.5, 0.5, 0.5, 1.0);
+const SHRINE_MATERIAL_SPECULAR  = vec4(0.3, 0.3, 0.3, 1.0);
 const SHRINE_MATERIAL_SHININESS = 10.0;
 
+/**
+ * Return the vertices composing a shrine or pedestal.
+ * @returns The vertices composing a shrine or pedestal.
+ */
 function generateShrineVertices() {
 	let vertices = [];
+	let cylinderVertices = generateCylinderVertices(1.0, 1.0);
+
 	vertices = vertices.concat(CUBE_FACES);
-	vertices = vertices.concat(generateCylinderVertices(1.0, 1.0));
+	vertices = vertices.concat(cylinderVertices);
 
 	return vertices;
 }
 
+/**
+ * Draw a three-dimensional shrine or pedestal.
+ * @param {number} offset The index in the global points array at which the
+ *                        shrine or pedestal's vertices begin.
+ */
 function drawShrine(offset) {
 	setMaterial(
 		SHRINE_MATERIAL_AMBIENT, SHRINE_MATERIAL_DIFFUSE, 
