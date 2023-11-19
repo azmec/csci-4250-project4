@@ -10,6 +10,9 @@ const SHRINE_MATERIAL_DIFFUSE   = vec4(0.5, 0.5, 0.5, 1.0);
 const SHRINE_MATERIAL_SPECULAR  = vec4(0.3, 0.3, 0.3, 1.0);
 const SHRINE_MATERIAL_SHININESS = 10.0;
 
+const SHRINE_COLUMN_SCALE  = vec3(2.0, 16.0, 2.0);
+const SHRINE_COLUMN_OFFSET = vec3(2, -8, 2);
+
 /**
  * Return the vertices composing a shrine or pedestal.
  * @returns The vertices composing a shrine or pedestal.
@@ -52,24 +55,14 @@ function drawShrine(offset) {
 	offset += CUBE_FACES.length;
 
 	/*
-	 * Model the front-right column.
+	 * Model the columns of the pedestal.
 	 */
-	drawCylinder(offset, vec3(2, -8, 2), vec3(2.0, 16.0, 2.0));
+	let [offsetX, offsetY, offsetZ] = SHRINE_COLUMN_OFFSET;
+	drawCylinder(offset, vec3( offsetX, offsetY,  offsetZ), SHRINE_COLUMN_SCALE);
+	drawCylinder(offset, vec3( offsetX, offsetY, -offsetZ), SHRINE_COLUMN_SCALE);
+	drawCylinder(offset, vec3(-offsetX, offsetY, -offsetZ), SHRINE_COLUMN_SCALE);
+	drawCylinder(offset, vec3(-offsetX, offsetY,  offsetZ), SHRINE_COLUMN_SCALE);
 
-	/*
-	 * Model the back-right column.
-	 */
-	drawCylinder(offset, vec3(2, -8, -2), vec3(2.0, 16.0, 2.0));
-
-	/*
-	 * Model the back-left column.
-	 */
-	drawCylinder(offset, vec3(-2, -8, -2), vec3(2.0, 16.0, 2.0));
-
-	/*
-	 * Model the front-left column.
-	 */
-	drawCylinder(offset, vec3(-2, -8, 2), vec3(2.0, 16.0, 2.0));
 	offset -= CUBE_FACES.length;
 
 	/*
