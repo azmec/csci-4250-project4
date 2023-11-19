@@ -59,8 +59,25 @@ const CUBE_FACES = [
 	CUBE_VERTICES[H],
 ];
 
-function drawCube(offset) {
+/**
+ * Draw the cube whose vertices begin at `offset`.
+ * @param {number} offset - The index in the global points array from which to
+ *                          begin drawing the cube.
+ * @param {vec3}   t      - The vector by which to translate the cube.
+ * @param {vec3}   s      - The vector by which to scale the scale.
+ */
+function drawCube(offset, t, s) {
+	let [tx, ty, tz] = t;
+	let [sx, sy, sz] = s;
+
+	matrixStack.push(modelViewMatrix);
+
+	modelViewMatrix = mult(modelViewMatrix, translate(tx, ty, tz));
+	modelViewMatrix = mult(modelViewMatrix, scale4(sx, sy, sz));
+	gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
 	gl.drawArrays(gl.TRIANGLES, offset, CUBE_FACES.length);
+
+	modelViewMatrix = matrixStack.pop();
 }
 
 function generateCylinderVertices(radius, height) {
