@@ -90,4 +90,6 @@ function drawShrine(offset) {
 
 	drawCube(offset);
 	offset += CUBE_FACES.length;
+
+	modelViewMatrix = matrixStack.pop();
 }
