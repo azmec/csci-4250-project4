@@ -1,9 +1,15 @@
-const NUM_HEART_FACES = 17;
+/**
+ * Carlos Aldana Lira
+ * CSCI 4250-D01
+ *
+ * Vertex and face definitions and drawing functions for a polygonal heart.
+ */
+
 const HEART_SCALE_Y = 5 / 4;
 
-const HEART_MATERIAL_AMBIENT   = vec4( 1.0, 0.0, 0.0, 1.0 );
-const HEART_MATERIAL_DIFFUSE   = vec4( 1.0, 0.1, 0.1, 1.0);
-const HEART_MATERIAL_SPECULAR  = vec4( 1.0, 1.0, 1.0, 1.0 );
+const HEART_MATERIAL_AMBIENT   = vec4(1.0, 0.0, 0.0, 1.0);
+const HEART_MATERIAL_DIFFUSE   = vec4(1.0, 0.1, 0.1, 1.0);
+const HEART_MATERIAL_SPECULAR  = vec4(1.0, 1.0, 1.0, 1.0);
 const HEART_MATERIAL_SHININESS = 30.0;
 
 /*
@@ -53,6 +59,7 @@ const HEART_VERTICES = [
 ];
 
 const HEART_FACES = [
+	// Faces composing the right center mass of the heart.
 	HEART_VERTICES[B],
 	HEART_VERTICES[A],
 	HEART_VERTICES[C],
@@ -73,7 +80,7 @@ const HEART_FACES = [
 	HEART_VERTICES[A],
 	HEART_VERTICES[G],
 
-	// Right "hump" of the heart.
+	// Faces composing the top-right "hump" of the heart.
 	HEART_VERTICES[B],
 	HEART_VERTICES[C],
 	HEART_VERTICES[H],
@@ -86,7 +93,7 @@ const HEART_FACES = [
 	HEART_VERTICES[C],
 	HEART_VERTICES[D],
 
-	// Right half of bottom "tip" of the heart. Drawn with `TRIANGLE_FAN`.
+	// Faces composing the bottom-right "tip" of the heart.
 	HEART_VERTICES[G],
 	HEART_VERTICES[J],
 	HEART_VERTICES[F],
@@ -95,7 +102,7 @@ const HEART_FACES = [
 	HEART_VERTICES[K],
 	HEART_VERTICES[J],
 
-	// TRIANGLES time
+	// Faces composing the right surface of the heart.
 	HEART_VERTICES[I],
 	HEART_VERTICES[D],
 	HEART_VERTICES[L],
@@ -120,10 +127,13 @@ const HEART_FACES = [
 	HEART_VERTICES[J],
 	HEART_VERTICES[N],
 
+	// Single face composing the top surface of the heart or the right
+	// side of the top "dip" of the heart.
 	HEART_VERTICES[O],
 	HEART_VERTICES[B],
 	HEART_VERTICES[H],
 ]
+const NUM_HEART_FACES = 17;
 
 /**
  * Draw a three-dimensional heart.
@@ -137,7 +147,9 @@ function drawHeart(startIdx) {
 	);
 	matrixStack.push(modelViewMatrix);
 
-	// FRONT HALF
+	/*
+	 * Draw the entire front-half by reflecting one side across the y-axis.
+ 	 */
 	modelViewMatrix = mult(modelViewMatrix, scale4(1, HEART_SCALE_Y, 1));
 	gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
 	gl.drawArrays(gl.TRIANGLES, startIdx, HEART_FACES.length);
@@ -146,7 +158,10 @@ function drawHeart(startIdx) {
 	gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
 	gl.drawArrays(gl.TRIANGLES, startIdx, HEART_FACES.length);
 
-	// BACK HALF
+	/*
+	 * Draw the entire front-half by reflecting both sides across the
+	 * z-axis and one side across the y-axis
+ 	 */
 	modelViewMatrix = mult(modelViewMatrix, scale4(-1, 1, -1));
 	gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
 	gl.drawArrays(gl.TRIANGLES, startIdx, HEART_FACES.length);
@@ -156,5 +171,4 @@ function drawHeart(startIdx) {
 	gl.drawArrays(gl.TRIANGLES, startIdx, HEART_FACES.length);
 
 	modelViewMatrix = matrixStack.pop();
-	gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
 }
