@@ -2,6 +2,8 @@
  * Carlos Aldana Lira
  * CSCI 4250-D01
  * Project 4.1
+ *
+ * Render a polygonal heart atop a pedestal composed from cubes and cylinders.
  */
 
 /*
@@ -18,8 +20,8 @@ const ORTHO_FAR   =  50;
 const LOOK_AT_POINT = vec3(0, 0, 0);
 // The relative "up" direction for the camera.
 const UP_DIRECTION  = vec3(0, 1, 0);
-
-const LIGHT_POSTIION = vec4(20, 20, 20, 0.0);
+// Position of the single light.
+const LIGHT_POSTIION = vec4(0, 40, 30, 0.0);
 
 let canvas, program;
 
