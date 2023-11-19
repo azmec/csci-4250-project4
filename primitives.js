@@ -64,7 +64,7 @@ const CUBE_FACES = [
  * @param {number} offset - The index in the global points array from which to
  *                          begin drawing the cube.
  * @param {vec3}   t      - The vector by which to translate the cube.
- * @param {vec3}   s      - The vector by which to scale the scale.
+ * @param {vec3}   s      - The vector by which to scale the cube.
  */
 function drawCube(offset, t, s) {
 	let [tx, ty, tz] = t;
@@ -119,8 +119,25 @@ function generateCylinderVertices(radius, height) {
 	return vertices;
 }
 
-function drawCylinder(offset) {
+/**
+ * Draw the cylinder whose vertices begin at `offset`.
+ * @param {number} offset - The index in the global points array from which to
+ *                          begin drawing the cylinder.
+ * @param {vec3}   t      - The vector by which to translate the cylinder.
+ * @param {vec3}   s      - The vector by which to scale the cylinder.
+ */
+function drawCylinder(offset, t, s) {
+	let [tx, ty, tz] = t;
+	let [sx, sy, sz] = s;
+
+	matrixStack.push(modelViewMatrix);
+
+	modelViewMatrix = mult(modelViewMatrix, translate(tx, ty, tz));
+	modelViewMatrix = mult(modelViewMatrix, scale4(sx, sy, sz));
+	gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
 	gl.drawArrays(gl.TRIANGLES, offset, 1728);
+
+	modelViewMatrix = matrixStack.pop();
 }
 
 function multiply(m, v) {

@@ -54,47 +54,23 @@ function drawShrine(offset) {
 	/*
 	 * Model the front-right column.
 	 */
-	matrixStack.push(modelViewMatrix);
-	modelViewMatrix = mult(modelViewMatrix, translate(2, -8, 2));
-	modelViewMatrix = mult(modelViewMatrix, scale4(2.0, 16.0, 2.0));
-	gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
-
-	drawCylinder(offset);
-	modelViewMatrix = matrixStack.pop();
+	drawCylinder(offset, vec3(2, -8, 2), vec3(2.0, 16.0, 2.0));
 
 	/*
 	 * Model the back-right column.
 	 */
-	matrixStack.push(modelViewMatrix);
-	modelViewMatrix = mult(modelViewMatrix, translate(2, -8, -2));
-	modelViewMatrix = mult(modelViewMatrix, scale4(2.0, 16.0, 2.0));
-	gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
-
-	drawCylinder(offset);
-	modelViewMatrix = matrixStack.pop();
+	drawCylinder(offset, vec3(2, -8, -2), vec3(2.0, 16.0, 2.0));
 
 	/*
 	 * Model the back-left column.
 	 */
-	matrixStack.push(modelViewMatrix);
-	modelViewMatrix = mult(modelViewMatrix, translate(-2, -8, -2));
-	modelViewMatrix = mult(modelViewMatrix, scale4(2.0, 16.0, 2.0));
-	gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
-
-	drawCylinder(offset);
-	modelViewMatrix = matrixStack.pop();
+	drawCylinder(offset, vec3(-2, -8, -2), vec3(2.0, 16.0, 2.0));
 
 	/*
 	 * Model the front-left column.
 	 */
-	matrixStack.push(modelViewMatrix);
-	modelViewMatrix = mult(modelViewMatrix, translate(-2, -8, 2));
-	modelViewMatrix = mult(modelViewMatrix, scale4(2.0, 16.0, 2.0));
-	gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
-
-	drawCylinder(offset);
+	drawCylinder(offset, vec3(-2, -8, 2), vec3(2.0, 16.0, 2.0));
 	offset -= CUBE_FACES.length;
-	modelViewMatrix = matrixStack.pop();
 
 	/*
 	 * Model the base above which the heart floats.
