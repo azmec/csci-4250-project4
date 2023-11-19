@@ -52,18 +52,6 @@ function drawShrine(offset) {
 	 * Model the secondary base of the pedestal.
 	 */
 	drawCube(offset, vec3(0, -7.5, 0), vec3(5.0, 1.5, 5.0));
-	offset += CUBE_FACES.length;
-
-	/*
-	 * Model the columns of the pedestal.
-	 */
-	let [offsetX, offsetY, offsetZ] = SHRINE_COLUMN_OFFSET;
-	drawCylinder(offset, vec3( offsetX, offsetY,  offsetZ), SHRINE_COLUMN_SCALE);
-	drawCylinder(offset, vec3( offsetX, offsetY, -offsetZ), SHRINE_COLUMN_SCALE);
-	drawCylinder(offset, vec3(-offsetX, offsetY, -offsetZ), SHRINE_COLUMN_SCALE);
-	drawCylinder(offset, vec3(-offsetX, offsetY,  offsetZ), SHRINE_COLUMN_SCALE);
-
-	offset -= CUBE_FACES.length;
 
 	/*
 	 * Model the base above which the heart floats.
@@ -75,4 +63,13 @@ function drawShrine(offset) {
 	 */
 	drawCube(offset, vec3(0, 9.2, 0), vec3(5.5, 0.2, 5.5));
 	offset += CUBE_FACES.length;
+
+	/*
+	 * Model the columns of the pedestal.
+	 */
+	let [offsetX, offsetY, offsetZ] = SHRINE_COLUMN_OFFSET;
+	drawCylinder(offset, vec3( offsetX, offsetY,  offsetZ), SHRINE_COLUMN_SCALE);
+	drawCylinder(offset, vec3( offsetX, offsetY, -offsetZ), SHRINE_COLUMN_SCALE);
+	drawCylinder(offset, vec3(-offsetX, offsetY, -offsetZ), SHRINE_COLUMN_SCALE);
+	drawCylinder(offset, vec3(-offsetX, offsetY,  offsetZ), SHRINE_COLUMN_SCALE);
 }
