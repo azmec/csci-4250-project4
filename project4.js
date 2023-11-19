@@ -285,12 +285,15 @@ function render() {
 
 	// Draw the three-dimensional heart.
 	matrixStack.push(modelViewMatrix);
-	modelViewMatrix = mult(modelViewMatrix, translate(0, 20, 0));
+	modelViewMatrix = mult(modelViewMatrix, translate(0, 10, 0));
 	modelViewMatrix = mult(modelViewMatrix, scale4(0.5, 0.5, 0.5));
 	drawHeart(startIdx);
 	modelViewMatrix = matrixStack.pop();
 
 	startIdx += HEART_FACES.length;
 
+	matrixStack.push(modelViewMatrix);
+	modelViewMatrix = mult(modelViewMatrix, translate(0, -10, 0));
 	drawShrine(startIdx);
+	modelViewMatrix = matrixStack.pop();
 }
