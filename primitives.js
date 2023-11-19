@@ -1,3 +1,10 @@
+/**
+ * Carlos Aldana Lira
+ * CSCI 4250-D01
+ *
+ * Definitions and drawing functions for three-dimensional primitives.
+ */
+
 const CUBE_VERTICES = [
 	vec4(-1, -1,  1, 1), // A
 	vec4(-1,  1,  1, 1), // B
@@ -80,6 +87,13 @@ function drawCube(offset, t, s) {
 	modelViewMatrix = matrixStack.pop();
 }
 
+/**
+ * Return the vertices composing the cylinder with the given radius and height.
+ * The cylinder is open on the top and bottom.
+ * @param {number} radius - The radius of the cylinder.
+ * @param {height} height - The height of the cylinder.
+ * @return The vertices composing the cylinder.
+ */
 function generateCylinderVertices(radius, height) {
 	let half = [];
 	for (let i = 0; i < 25; i++) {
@@ -98,19 +112,25 @@ function generateCylinderVertices(radius, height) {
 		prev1 = init1;
 		prev2 = init2;
 
+		// Generate and push the vertices for the cylinder's quads,
+		// rotating about the y-axis to close the cylinder.
 		for (let j = 0; j < slices; j++) {
 			let angle = (j + 1) * 360 / slices;
 			let rotation = rotate(angle, 0, 1, 0);
 			curr1 = multiply(rotation, init1);
 			curr2 = multiply(rotation, init2);
 
+			// First triangle for the quad.
 			vertices.push(prev1);
 			vertices.push(curr1);
 			vertices.push(curr2);
+
+			// Second triangle for the quad.
 			vertices.push(prev1);
 			vertices.push(curr2);
 			vertices.push(prev2);
 
+			// Current points are next points' previous points.
 			prev1 = curr1;
 			prev2 = curr2;
 		}
@@ -140,11 +160,19 @@ function drawCylinder(offset, t, s) {
 	modelViewMatrix = matrixStack.pop();
 }
 
+/**
+ * Return the product of the given matrix and vector.
+ * @param {mat4} m - The matrix to multiply.
+ * @param {vec4} v - The vector to multiply.
+ * @returns The product of the given matrix and vector.
+ */
 function multiply(m, v) {
-    var vv=vec4(
-     m[0][0]*v[0] + m[0][1]*v[1] + m[0][2]*v[2]+ m[0][3]*v[3],
-     m[1][0]*v[0] + m[1][1]*v[1] + m[1][2]*v[2]+ m[1][3]*v[3],
-     m[2][0]*v[0] + m[2][1]*v[1] + m[2][2]*v[2]+ m[2][3]*v[3],
-     m[3][0]*v[0] + m[3][1]*v[1] + m[3][2]*v[2]+ m[3][3]*v[3]);
-    return vv;
+	let vv = vec4(
+		m[0][0]*v[0] + m[0][1]*v[1] + m[0][2]*v[2]+ m[0][3]*v[3],
+		m[1][0]*v[0] + m[1][1]*v[1] + m[1][2]*v[2]+ m[1][3]*v[3],
+		m[2][0]*v[0] + m[2][1]*v[1] + m[2][2]*v[2]+ m[2][3]*v[3],
+		m[3][0]*v[0] + m[3][1]*v[1] + m[3][2]*v[2]+ m[3][3]*v[3]
+	);
+
+    	return vv;
 }
