@@ -35,6 +35,9 @@ function drawShrine(offset) {
 		SHRINE_MATERIAL_SPECULAR, SHRINE_MATERIAL_SHININESS
 	);
 
+	/*
+	 * Model the trim at the base of the pedestal.
+	 */
 	matrixStack.push(modelViewMatrix);
 	modelViewMatrix = mult(modelViewMatrix, translate(0, -8.5, 0));
 	modelViewMatrix = mult(modelViewMatrix, scale4(5.5, 0.5, 5.5));
@@ -43,6 +46,9 @@ function drawShrine(offset) {
 	drawCube(offset);
 	modelViewMatrix = matrixStack.pop();
 
+	/*
+	 * Model the base of the pedestal.
+	 */
 	matrixStack.push(modelViewMatrix);
 	modelViewMatrix = mult(modelViewMatrix, translate(0, -11, 0));
 	modelViewMatrix = mult(modelViewMatrix, scale4(6, 2.0, 6));
@@ -51,6 +57,9 @@ function drawShrine(offset) {
 	drawCube(offset);
 	modelViewMatrix = matrixStack.pop();
 
+	/*
+	 * Model the secondary base of the pedestal.
+	 */
 	matrixStack.push(modelViewMatrix);
 	modelViewMatrix = mult(modelViewMatrix, translate(0, -7.5, 0));
 	modelViewMatrix = mult(modelViewMatrix, scale4(5.0, 1.5, 5.0));
@@ -60,6 +69,9 @@ function drawShrine(offset) {
 	offset += CUBE_FACES.length;
 	modelViewMatrix = matrixStack.pop();
 
+	/*
+	 * Model the front-right column.
+	 */
 	matrixStack.push(modelViewMatrix);
 	modelViewMatrix = mult(modelViewMatrix, translate(2, -8, 2));
 	modelViewMatrix = mult(modelViewMatrix, scale4(2.0, 16.0, 2.0));
@@ -68,6 +80,9 @@ function drawShrine(offset) {
 	drawCylinder(offset);
 	modelViewMatrix = matrixStack.pop();
 
+	/*
+	 * Model the back-right column.
+	 */
 	matrixStack.push(modelViewMatrix);
 	modelViewMatrix = mult(modelViewMatrix, translate(2, -8, -2));
 	modelViewMatrix = mult(modelViewMatrix, scale4(2.0, 16.0, 2.0));
@@ -76,6 +91,9 @@ function drawShrine(offset) {
 	drawCylinder(offset);
 	modelViewMatrix = matrixStack.pop();
 
+	/*
+	 * Model the back-left column.
+	 */
 	matrixStack.push(modelViewMatrix);
 	modelViewMatrix = mult(modelViewMatrix, translate(-2, -8, -2));
 	modelViewMatrix = mult(modelViewMatrix, scale4(2.0, 16.0, 2.0));
@@ -84,6 +102,9 @@ function drawShrine(offset) {
 	drawCylinder(offset);
 	modelViewMatrix = matrixStack.pop();
 
+	/*
+	 * Model the front-left column.
+	 */
 	matrixStack.push(modelViewMatrix);
 	modelViewMatrix = mult(modelViewMatrix, translate(-2, -8, 2));
 	modelViewMatrix = mult(modelViewMatrix, scale4(2.0, 16.0, 2.0));
@@ -93,6 +114,9 @@ function drawShrine(offset) {
 	offset -= CUBE_FACES.length;
 	modelViewMatrix = matrixStack.pop();
 
+	/*
+	 * Model the base above which the heart floats.
+	 */
 	matrixStack.push(modelViewMatrix);
 	modelViewMatrix = mult(modelViewMatrix, translate(0, 8, 0));
 	modelViewMatrix = mult(modelViewMatrix, scale4(6.0, 1.0, 6.0));
@@ -101,6 +125,9 @@ function drawShrine(offset) {
 	drawCube(offset);
 	modelViewMatrix = matrixStack.pop();
 
+	/*
+	 * Model the trim of the base above which the heart floats.
+	 */
 	matrixStack.push(modelViewMatrix);
 	modelViewMatrix = mult(modelViewMatrix, translate(0, 9.2, 0));
 	modelViewMatrix = mult(modelViewMatrix, scale4(5.5, 0.2, 5.5));
