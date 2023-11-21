@@ -261,7 +261,7 @@ function initHtmlButtons() {
  * @param {number} shininess The object's shininess property.
  */
 function setMaterial(ambient, diffuse, specular, shininess) {
-	// Combute the products given by the material.
+	// Compute the products given by the material.
 	let ambientProduct  = mult(LIGHT_AMBIENT, ambient);
 	let diffuseProduct  = mult(LIGHT_DIFFUSE, diffuse);
 	let specularProduct = mult(LIGHT_SPECULAR, specular);
@@ -281,6 +281,8 @@ function setMaterial(ambient, diffuse, specular, shininess) {
 function newell(vertices) {
 	let length = vertices.length;
 	let x = 0, y = 0, z = 0;
+
+	// Compute the normal for the polygon.
 	for (let i = 0; i < length; i++) {
 		let next = (i + 1) % length;
 
@@ -289,6 +291,7 @@ function newell(vertices) {
 		z += (vertices[i][0] - vertices[next][0]) * (vertices[i][1] + vertices[next][1]);
 	}
 
+	// Return the normal, normalized.
 	return normalize(vec3(x, y, z));
 }
 
@@ -333,6 +336,7 @@ function render() {
 	modelViewMatrix = lookAt(eye, LOOK_AT_POINT, UP_DIRECTION);
 	gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
 
+	// Index into the `pointsArray` and `normalsArray`.
 	let startIdx = 0;
 
 	// Draw the three-dimensional heart.
@@ -344,6 +348,7 @@ function render() {
 
 	startIdx += HEART_FACES.length;
 
+	// Draw the shrine/pedestal.
 	matrixStack.push(modelViewMatrix);
 	modelViewMatrix = mult(modelViewMatrix, translate(0, -10, 0));
 	drawShrine(startIdx);

@@ -7,6 +7,9 @@
 
 const HEART_SCALE_Y = 5 / 4;
 
+/**
+ * Heart material definitions.
+ */
 const HEART_MATERIAL_AMBIENT   = vec4(1.0, 0.0, 0.0, 1.0);
 const HEART_MATERIAL_DIFFUSE   = vec4(1.0, 0.1, 0.1, 1.0);
 const HEART_MATERIAL_SPECULAR  = vec4(1.0, 1.0, 1.0, 1.0);
@@ -35,6 +38,7 @@ const P = 15;
 const Q = 16;
 const R = 17;
 
+// Vertex definitions for the heart.
 const HEART_VERTICES = [
 	// Vertices for the front right-half of the heart.
 	vec4(0, 0, 5.0, 1),   // A
@@ -58,6 +62,7 @@ const HEART_VERTICES = [
 	vec4(0, 8, -2.5, 1) // O
 ];
 
+// Face definitions for the heart, composed from the vertex definitions.
 const HEART_FACES = [
 	// Faces composing the right center mass of the heart.
 	HEART_VERTICES[B],
@@ -133,7 +138,7 @@ const HEART_FACES = [
 	HEART_VERTICES[B],
 	HEART_VERTICES[H],
 ]
-const NUM_HEART_FACES = 17;
+const NUM_HEART_FACES = HEART_FACES.length / 3;
 
 /**
  * Draw a three-dimensional heart.

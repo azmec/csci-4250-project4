@@ -5,6 +5,11 @@
  * Definitions and drawing functions for three-dimensional primitives.
  */
 
+/****************************************
+ * Definitions for a primitive unit cube.
+ ****************************************/
+
+// Vertex definitions for a unit cube.
 const CUBE_VERTICES = [
 	vec4(-1, -1,  1, 1), // A
 	vec4(-1,  1,  1, 1), // B
@@ -16,6 +21,7 @@ const CUBE_VERTICES = [
 	vec4( 1, -1, -1, 1)  // H
 ];
 
+// Face definitions for the cube, composed from the cube vertices.
 const CUBE_FACES = [
 	// The front face.
 	CUBE_VERTICES[B],
@@ -86,6 +92,10 @@ function drawCube(offset, t, s) {
 
 	modelViewMatrix = matrixStack.pop();
 }
+
+/****************************************
+ * Definitions for a primitive cylinder.
+ ****************************************/
 
 /**
  * Return the vertices composing the cylinder with the given radius and height.

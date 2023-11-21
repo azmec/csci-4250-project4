@@ -5,11 +5,17 @@
  * Vertex and face definitions and drawing functions for a shrine/pedestal.
  */
 
+/**
+ * Material definitions for the shrine/pedestal.
+ */
 const SHRINE_MATERIAL_AMBIENT   = vec4(0.5, 0.5, 0.5, 1.0);
 const SHRINE_MATERIAL_DIFFUSE   = vec4(0.5, 0.5, 0.5, 1.0);
 const SHRINE_MATERIAL_SPECULAR  = vec4(0.3, 0.3, 0.3, 1.0);
 const SHRINE_MATERIAL_SHININESS = 10.0;
 
+/**
+ * Scale and offsets for the columns composing the shrine.
+ */
 const SHRINE_COLUMN_SCALE  = vec3(2.0, 16.0, 2.0);
 const SHRINE_COLUMN_OFFSET = vec3(2, -8, 2);
 
