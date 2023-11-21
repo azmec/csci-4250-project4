@@ -3,7 +3,8 @@
  * CSCI 4250-D01
  * Project 4.1
  *
- * Render a polygonal heart atop a pedestal composed from cubes and cylinders.
+ * Render a polygonal heart atop a pedestal. The pedestal is composed of many
+ * primitive shapes of at least two different types, a unit cube and a cylinder.
  */
 
 /*
