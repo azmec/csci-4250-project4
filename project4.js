@@ -29,6 +29,9 @@ const LOOK_AT_POINT = vec3(0, 0, 0);
 // The relative "up" direction for the camera.
 const UP_DIRECTION  = vec3(0, 1, 0);
 
+// The number of points a face is assumed to be composed of.
+const POINTS_PER_FACE = 3;
+
 let canvas, program;
 
 let pointsArray = [];
@@ -77,28 +80,16 @@ function main() {
 		return;
 	}
 
-	// Add and color the faces of the tetrahedron.
+	// Add the vertices and normals for the heart.
 	pointsArray = pointsArray.concat(HEART_FACES);
-	for (let i = 0; i < NUM_HEART_FACES; i++) {
-		let j = i * 3;
-		let facePoints = [HEART_FACES[j], HEART_FACES[j + 1], HEART_FACES[j + 2]];
-		let normal = newell(facePoints);
-		normalsArray.push(normal);
-		normalsArray.push(normal);
-		normalsArray.push(normal);
-	}
+	let heartNormals = generateNormals(HEART_FACES);
+	normalsArray = normalsArray.concat(heartNormals);
 
+	// Add the vertices and normals for the shrine.
 	let shrinePoints = generateShrineVertices();
+	let shrineNormals = generateNormals(shrinePoints);
 	pointsArray = pointsArray.concat(shrinePoints);
-	for (let i = 0; i < shrinePoints.length; i += 3) {
-		let facePoints = shrinePoints.slice(i, i + 3);
-		let normal = newell(facePoints);
-
-		normalsArray.push(normal);
-		normalsArray.push(normal);
-		normalsArray.push(normal);
-
-	}
+	normalsArray = normalsArray.concat(shrineNormals);
 
 	// Initailize the WebGL context.
 	initWebGL();
@@ -309,6 +300,27 @@ function scale4(sx, sy, sz) {
 	matrix[2][2] = sz;
 
 	return matrix;
+}
+
+/**
+ * Return the list of normals for the faces composed by the given vertices.
+ * @param {Array} The list of vertices composed faces with `POINTS_PER_FACE`
+ *                vertices each.
+ * @returns The list of normals for the faces. Will be equivalent in length to
+ *          the length of the given list of vertices.
+ */
+function generateNormals(vertices) {
+	let normals = [];
+	for (let i = 0; i < vertices.length; i+= POINTS_PER_FACE) {
+		let facePoints = vertices.slice(i, i + POINTS_PER_FACE);
+		let normal = newell(facePoints);
+
+		// Push appropriate copies of normal into the array.
+		for (let j = 0; j < POINTS_PER_FACE; j++)
+			normals.push(normal);
+	}
+
+	return normals;
 }
 
 function render() {

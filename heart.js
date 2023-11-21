@@ -115,7 +115,6 @@ const HEART_FACES = [
 	HEART_VERTICES[B],
 	HEART_VERTICES[H],
 ]
-const NUM_HEART_FACES = HEART_FACES.length / 3;
 
 /**
  * Draw a three-dimensional heart.
