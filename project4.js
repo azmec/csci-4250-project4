@@ -43,6 +43,9 @@ let projectionMatrix, projectionMatrixLoc;
 let ambientProductLoc, diffuseProductLoc, specularProductLoc;
 let lightPositionLoc, shininessLoc;
 
+// "Previous" time in milliseconds since the page was first loaded.
+let then = 0.0;
+
 /**
  * Global WebGL state variables.
  */
@@ -99,7 +102,7 @@ function main() {
 	initHtmlButtons();
 	initHtmlMouseControls();
 
-	render();
+	requestAnimationFrame(loop);
 }
 
 /**
@@ -314,9 +317,26 @@ function generateNormals(vertices) {
 	return normals;
 }
 
-function render() {
-	gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
+/**
+ * Update and render the world forever.
+ * @param {number} now - Time in milliseconds since the page was first loaded.
+ */
+function loop(now) {
+	let delta = (now - then) / 1000.0;
+	then = now;
 
+	// Update and render the world.
+	update(delta);
+	render();
+
+	requestAnimationFrame(loop);
+}
+
+/**
+ * Update the world's state.
+ * @param {number} delta - Time in seconds since the last frame was rendered.
+ */
+function update(_delta) {
 	// Compute the viewing volume based on the current zoom and mouse movements.
 	projectionMatrix = ortho(
 		ORTHO_X_MIN * AllInfo.zoomFactor - AllInfo.translateX,
@@ -338,6 +358,13 @@ function render() {
 	// Set the position of the eye.
 	modelViewMatrix = lookAt(eye, LOOK_AT_POINT, UP_DIRECTION);
 	gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
+}
+
+/**
+ * Render the world.
+ */
+function render() {
+	gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
 
 	// Index into the `pointsArray` and `normalsArray`.
 	let startIdx = 0;
@@ -356,6 +383,4 @@ function render() {
 	modelViewMatrix = mult(modelViewMatrix, translate(0, -10, 0));
 	drawShrine(startIdx);
 	modelViewMatrix = matrixStack.pop();
-
-	requestAnimationFrame(render);
 }
