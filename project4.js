@@ -46,6 +46,12 @@ let lightPositionLoc, shininessLoc;
 // "Previous" time in milliseconds since the page was first loaded.
 let then = 0.0;
 
+// Whether to play the animation(s) in the current frame.
+let playAnimation = false;
+
+let heartPos = vec3(0, 10, 0);
+let heartRotationDegrees = 0.0;
+
 /**
  * Global WebGL state variables.
  */
@@ -100,6 +106,7 @@ function main() {
 
 	// Initialize the HTML elements.
 	initHtmlButtons();
+	initHtmlKeyControls();
 	initHtmlMouseControls();
 
 	requestAnimationFrame(loop);
@@ -150,6 +157,17 @@ function initWebGL() {
 	
 	// Set the position of the global light.
 	gl.uniform4fv(gl.getUniformLocation(program, "lightPosition"), flatten(LIGHT_POSTIION));
+}
+
+function initHtmlKeyControls() {
+	window.addEventListener("keydown", (event) => {
+		let code = event.code;
+		
+		// Toggle whether the animation(s) is playing by the `A` key.
+		if (code == "KeyA") {
+			playAnimation = !playAnimation;
+		}
+	});
 }
 
 /**
@@ -336,7 +354,7 @@ function loop(now) {
  * Update the world's state.
  * @param {number} delta - Time in seconds since the last frame was rendered.
  */
-function update(_delta) {
+function update(delta) {
 	// Compute the viewing volume based on the current zoom and mouse movements.
 	projectionMatrix = ortho(
 		ORTHO_X_MIN * AllInfo.zoomFactor - AllInfo.translateX,
@@ -358,6 +376,10 @@ function update(_delta) {
 	// Set the position of the eye.
 	modelViewMatrix = lookAt(eye, LOOK_AT_POINT, UP_DIRECTION);
 	gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
+
+	// If we're playing an animation, update the appropriate states.
+	if (playAnimation)
+		heartRotationDegrees += 30.0 * delta;
 }
 
 /**
@@ -371,7 +393,9 @@ function render() {
 
 	// Draw the three-dimensional heart.
 	matrixStack.push(modelViewMatrix);
-	modelViewMatrix = mult(modelViewMatrix, translate(0, 10, 0));
+	let [heartX, heartY, heartZ] = heartPos;
+	modelViewMatrix = mult(modelViewMatrix, translate(heartX, heartY, heartZ));
+	modelViewMatrix = mult(modelViewMatrix, rotate(heartRotationDegrees, 0, 1, 0));
 	modelViewMatrix = mult(modelViewMatrix, scale4(0.5, 0.5, 0.5));
 	drawHeart(startIdx);
 	modelViewMatrix = matrixStack.pop();
