@@ -49,8 +49,19 @@ let then = 0.0;
 // Whether to play the animation(s) in the current frame.
 let playAnimation = false;
 
-let heartPos = vec3(0, 10, 0);
+// The "anchor" the heart bobs under and over during animation.
+let heartAnchorY = 10.0;
+// Frequency of the wave the heart bobs along during animation.
+let heartFrequency = 0.01;
+// Amplitude of the wave the heart bobs along during animation.
+let heartAmplitude = 2.0;
+
+let heartPos = vec3(0, heartAnchorY, 0);
 let heartRotationDegrees = 0.0;
+let heartRotationIncrement = 45.0;
+
+// Number of times `update` has executed.
+let timer = 0.0;
 
 /**
  * Global WebGL state variables.
@@ -378,8 +389,16 @@ function update(delta) {
 	gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
 
 	// If we're playing an animation, update the appropriate states.
-	if (playAnimation)
-		heartRotationDegrees += 30.0 * delta;
+	if (playAnimation) {
+		/*
+		 * Rotate the heart while it bobs up and down.
+		 */
+		heartRotationDegrees += heartRotationIncrement * delta;
+		let heartYDelta = Math.sin(timer * heartFrequency) * heartAmplitude;
+		heartPos[1] = heartAnchorY + (heartYDelta );
+
+		timer += 1;
+	}
 }
 
 /**
