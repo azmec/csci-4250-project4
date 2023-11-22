@@ -1,101 +1,78 @@
 const POT_VERTICES = [
-	vec2(6, -8.5), // A
-	vec2(8, -3.5), // B
-	vec2(6, -0.5), // C
-	vec2(2,  3.5), // D
-	vec2(2,  4.5), // E
-	vec2(4,  6.5), // F
-	vec2(4,  7.0), // G
-	vec2(3,  7.0), // H
+	vec3(6, -8.5, 0), // A
+	vec3(8, -3.5, 0), // B
+	vec3(6, -0.5, 0), // C
+	vec3(2,  3.5, 0), // D
+	vec3(2,  4.5, 0), // E
+	vec3(4,  6.5, 0), // F
+	vec3(4,  7.0, 0), // G
+	vec3(3,  7.0, 0), // H
 ];
 
-//Pawn initial 2d line points for surface of revolution  (25 points)
-//The points are defined from bottom up in the X-Y plane
-let pawnPoints = [
-	[0,    .104, 0.0],
-	[.028, .110, 0.0],
-	[.052, .126, 0.0],
-	[.068, .161, 0.0],
-	[.067, .197, 0.0],
-	[.055, .219, 0.0],
-	[.041, .238, 0.0],
-	[.033, .245, 0.0],
-	[.031, .246, 0.0],
-	[.056, .257, 0.0],
-	[.063, .266, 0.0],
-	[.059, .287, 0.0],
-	[.048, .294, 0.0],
-	[.032, .301, 0.0],
-	[.027, .328, 0.0],
-	[.032, .380, 0.0],
-	[.043, .410, 0.0],
-	[.058, .425, 0.0],
-	[.066, .433, 0.0],
-	[.069, .447, 0.0],
-	[.093, .465, 0.0],
-	[.107, .488, 0.0],
-	[.106, .512, 0.0],
-	[.115, .526, 0.0],
-	[0, .525, 0.0],
-];
+/**
+ * Return the points composing the surface of revolution resulting from the
+ * polyline composed by `vertices`. The surface is composed of `numSlices`.
+ * @param {Array} vertices  - The points composing the polyline.
+ * @param {num}   numSlices - The number of slices to composed the surface by.
+ * @returns The list of vertices (mesh) modeling the surface of revolution.
+ *          The length of the returned list is:
+ *          `numSlices * (vertices.length - 1) * 6`
+ */
+function generateSurfaceOfRevolution(vertices, numSlices) {
+	const NUM_VERTICES = vertices.length;
 
+	let revolvedVertices = [];
+	let faces = [];
 
-//Sets up the vertices array so the pawn can be drawn
-function SurfaceRevPoints() {
-	let vertices = [];
-	let points = [];
-
-	// Initialize our initial list of points to revolve.
-	for (let i = 0; i < pawnPoints.length; i++) {
-		let [x, y, z] = pawnPoints[i];
-		vertices.push(vec4(x, y, z, 1));
+	// Initialize our initial list of vertices to revolve.
+	for (let i = 0; i < NUM_VERTICES; i++) {
+		let [x, y, z] = vertices[i];
+		revolvedVertices.push(vec4(x, y, z, 1));
 	}
 
-	let numSlices = 16;
-	let numLayers = 24;
-
-	// Revolve our list of points `numSlices` times about the y-axis,
+	// Revolve our list of vertices `numSlices` times about the y-axis,
 	// incrementing the rotation so as to create a close "shell".
 	let rotationInc = 360.0 / numSlices * (Math.PI / 180.0);
 	for (let j = 0; j < numSlices; j++) {
 		let angle = (j + 1) * rotationInc;
 
-		// Compute and append the rotated set of points.
-		for (let i = 0; i < pawnPoints.length ; i++) {	
-			let radius = vertices[i][0];
+		// Compute and append the rotated set of vertices.
+		for (let i = 0; i < NUM_VERTICES; i++) {	
+			let radius = revolvedVertices[i][0];
 			let x = radius * Math.cos(angle);
-			let y = vertices[i][1];
+			let y = revolvedVertices[i][1];
 			let z = -radius * Math.sin(angle);
 
-			vertices.push(vec4(x, y, z, 1));
+			revolvedVertices.push(vec4(x, y, z, 1));
 		}    	
 	}
 
-	let N = pawnPoints.length; 
-
-	// quad strips are formed slice by slice (not layer by layer)
+	// Form the quad strips slice-by-slice (not layer by layer).
+	//
 	//          ith slice      (i+1)th slice
 	//            i*N+(j+1)-----(i+1)*N+(j+1)
 	//               |              |
 	//               |              |
 	//            i*N+j --------(i+1)*N+j
-	// define each quad in counter-clockwise rotation of the vertices
+	//
+	// Each quad is defined in counter-clockwise rotation of the vertices.
+	let numLayers = NUM_VERTICES - 1;
 	for (let i = 0; i < numSlices; i++) { // slices
 		for (let j = 0; j < numLayers; j++) { // layers
-			let a = i * N + j;
-			let b = (i + 1) * N + j;
-			let c = (i + 1) * N + (j + 1);
-			let d = i * N + (j + 1);
+			let a = i * NUM_VERTICES + j;
+			let b = (i + 1) * NUM_VERTICES + j;
+			let c = (i + 1) * NUM_VERTICES + (j + 1);
+			let d = i * NUM_VERTICES + (j + 1);
 
-			points.push(vertices[a]);
-			points.push(vertices[b]);
-			points.push(vertices[c]);
+			faces.push(revolvedVertices[a]);
+			faces.push(revolvedVertices[b]);
+			faces.push(revolvedVertices[c]);
 
-			points.push(vertices[a]);
-			points.push(vertices[c]);
-			points.push(vertices[d]);
+			faces.push(revolvedVertices[a]);
+			faces.push(revolvedVertices[c]);
+			faces.push(revolvedVertices[d]);
 		}
 	}    
 
-	return points;
+	return faces;
 }

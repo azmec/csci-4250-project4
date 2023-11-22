@@ -113,7 +113,7 @@ function main() {
 	normalsArray = normalsArray.concat(shrineNormals);
 
 	// Add the vertices for the pot (surface of revolution).
-	let potPoints = SurfaceRevPoints();
+	let potPoints = generateSurfaceOfRevolution(POT_VERTICES, 16);
 	let potNormals = generateNormals(potPoints);
 	pointsArray = pointsArray.concat(potPoints);
 	normalsArray = normalsArray.concat(potNormals);
@@ -437,9 +437,8 @@ function render() {
 	startIdx += (CUBE_FACES.length + 1728);
 
 	matrixStack.push(modelViewMatrix);
-	modelViewMatrix = mult(modelViewMatrix, translate(0, 10, 20));
-	modelViewMatrix = mult(modelViewMatrix, scale4(50, -50, 50));
+	modelViewMatrix = mult(modelViewMatrix, translate(0, 0, 30));
 	gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
-	gl.drawArrays(gl.TRIANGLES, startIdx, 2304);
+	gl.drawArrays(gl.TRIANGLES, startIdx, 672);
 	modelViewMatrix = matrixStack.pop();
 }
