@@ -162,8 +162,6 @@ function initHtmlMouseControls() {
 		} else {
 			AllInfo.zoomFactor += 0.1;
 		}
-
-		render();
 	});
 
 	// When either mouse button is clicked, record which clicked and the
@@ -180,14 +178,12 @@ function initHtmlMouseControls() {
 			AllInfo.mousePosOnClickY = e.y;
 			AllInfo.mousePosOnClickX = e.x;
 		}
-		render();
 	});
 
 	// Reset mouse-click flags when either mouse button releases.
 	document.addEventListener("mouseup", function(_) {
 		AllInfo.mouseDownLeft = false;
 		AllInfo.mouseDownRight = false;
-		render();
 	});
 
 	// Whenever the mouse moves and one of the mouse buttons are pressed,
@@ -211,8 +207,6 @@ function initHtmlMouseControls() {
 			AllInfo.mousePosOnClickX = e.x;
 			AllInfo.mousePosOnClickY = e.y;
 		}
-
-		render();
 	});
 }
 
@@ -223,25 +217,21 @@ function initHtmlButtons() {
 	// Increment theta when corresponding button is clicked.
 	document.getElementById("thetaup").addEventListener("click", function(_) {
 		AllInfo.theta += AllInfo.dr;
-		render();
 	});
 
 	// Decrement theta when corresponding button is clicked.
 	document.getElementById("thetadown").addEventListener("click", function(_) {
 		AllInfo.theta -= AllInfo.dr;
-		render();
 	});
 	
 	// Increment phi when corresponding button is clicked.
 	document.getElementById("phiup").addEventListener("click", function(_) {
 		AllInfo.phi += AllInfo.dr;
-		render();
 	});
 
 	// Decrement phi when corresponding button is clicked.
 	document.getElementById("phidown").addEventListener("click", function(_) {
 		AllInfo.phi -= AllInfo.dr;
-		render();
 	});
 }
 
@@ -366,4 +356,6 @@ function render() {
 	modelViewMatrix = mult(modelViewMatrix, translate(0, -10, 0));
 	drawShrine(startIdx);
 	modelViewMatrix = matrixStack.pop();
+
+	requestAnimationFrame(render);
 }
