@@ -440,6 +440,6 @@ function render() {
 	modelViewMatrix = mult(modelViewMatrix, translate(0, 10, 20));
 	modelViewMatrix = mult(modelViewMatrix, scale4(50, -50, 50));
 	gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
-	gl.drawArrays(gl.TRIANGLES, startIdx, 3456);
+	gl.drawArrays(gl.TRIANGLES, startIdx, 2304);
 	modelViewMatrix = matrixStack.pop();
 }

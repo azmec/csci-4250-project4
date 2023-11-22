@@ -45,37 +45,43 @@ function SurfaceRevPoints() {
 	let vertices = [];
 	let points = [];
 
-	//Setup initial points matrix
-	for (let i = 0; i<25; i++) {
-		vertices.push(vec4(pawnPoints[i][0], pawnPoints[i][1], 
-			pawnPoints[i][2], 1));
+	// Initialize our initial list of points to revolve.
+	for (let i = 0; i < pawnPoints.length; i++) {
+		let [x, y, z] = pawnPoints[i];
+		vertices.push(vec4(x, y, z, 1));
 	}
 
-	let r;
-	let t=Math.PI/12;
+	let numSlices = 16;
+	let numLayers = 24;
 
-	// sweep the original curve another "angle" degree
-	for (let j = 0; j < 24; j++) {
-		let angle = (j+1)*t; 
+	// Revolve our list of points `numSlices` times about the y-axis,
+	// incrementing the rotation so as to create a close "shell".
+	let rotationInc = 360.0 / numSlices * (Math.PI / 180.0);
+	for (let j = 0; j < numSlices; j++) {
+		let angle = (j + 1) * rotationInc;
 
-		// for each sweeping step, generate 25 new points corresponding to the original points
-		for(let i = 0; i < 25 ; i++ )
-		{	
-			r = vertices[i][0];
-			vertices.push(vec4(r*Math.cos(angle), vertices[i][1], -r*Math.sin(angle), 1));
+		// Compute and append the rotated set of points.
+		for (let i = 0; i < pawnPoints.length ; i++) {	
+			let radius = vertices[i][0];
+			let x = radius * Math.cos(angle);
+			let y = vertices[i][1];
+			let z = -radius * Math.sin(angle);
+
+			vertices.push(vec4(x, y, z, 1));
 		}    	
 	}
 
-	let N=25; 
+	let N = pawnPoints.length; 
+
 	// quad strips are formed slice by slice (not layer by layer)
 	//          ith slice      (i+1)th slice
 	//            i*N+(j+1)-----(i+1)*N+(j+1)
 	//               |              |
-		//               |              |
-		//            i*N+j --------(i+1)*N+j
+	//               |              |
+	//            i*N+j --------(i+1)*N+j
 	// define each quad in counter-clockwise rotation of the vertices
-	for (let i=0; i<24; i++) { // slices
-		for (let j=0; j<24; j++) { // layers
+	for (let i = 0; i < numSlices; i++) { // slices
+		for (let j = 0; j < numLayers; j++) { // layers
 			let a = i * N + j;
 			let b = (i + 1) * N + j;
 			let c = (i + 1) * N + (j + 1);
