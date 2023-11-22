@@ -112,6 +112,12 @@ function main() {
 	pointsArray = pointsArray.concat(shrinePoints);
 	normalsArray = normalsArray.concat(shrineNormals);
 
+	// Add the vertices for the pot (surface of revolution).
+	let potPoints = SurfaceRevPoints();
+	let potNormals = generateNormals(potPoints);
+	pointsArray = pointsArray.concat(potPoints);
+	normalsArray = normalsArray.concat(potNormals);
+
 	// Initailize the WebGL context.
 	initWebGL();
 
@@ -425,5 +431,15 @@ function render() {
 	matrixStack.push(modelViewMatrix);
 	modelViewMatrix = mult(modelViewMatrix, translate(0, -10, 0));
 	drawShrine(startIdx);
+	modelViewMatrix = matrixStack.pop();
+
+	// TODO: Abstract this increment away.
+	startIdx += (CUBE_FACES.length + 1728);
+
+	matrixStack.push(modelViewMatrix);
+	modelViewMatrix = mult(modelViewMatrix, translate(0, 10, 20));
+	modelViewMatrix = mult(modelViewMatrix, scale4(50, -50, 50));
+	gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
+	gl.drawArrays(gl.TRIANGLES, startIdx, 3456);
 	modelViewMatrix = matrixStack.pop();
 }
