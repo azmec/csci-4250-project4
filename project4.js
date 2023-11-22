@@ -437,8 +437,8 @@ function render() {
 	startIdx += (CUBE_FACES.length + 1728);
 
 	matrixStack.push(modelViewMatrix);
-	modelViewMatrix = mult(modelViewMatrix, translate(0, 0, 30));
+	modelViewMatrix = mult(modelViewMatrix, translate(-20, -14.5, 15));
 	gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
-	gl.drawArrays(gl.TRIANGLES, startIdx, 672);
+	gl.drawArrays(gl.TRIANGLES, startIdx, (POT_VERTICES.length - 1) * 16 * 6);
 	modelViewMatrix = matrixStack.pop();
 }
