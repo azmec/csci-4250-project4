@@ -118,6 +118,12 @@ function main() {
 	pointsArray = pointsArray.concat(potPoints);
 	normalsArray = normalsArray.concat(potNormals);
 
+	let beegPoints = generatedExtrudedVertices(BEEG_CUBE_VERTICES, -10);
+	let beegNormals = generateNormals(beegPoints);
+	console.log(beegNormals);
+	pointsArray = pointsArray.concat(beegPoints);
+	normalsArray = normalsArray.concat(beegNormals);
+
 	// Initailize the WebGL context.
 	initWebGL();
 
@@ -367,6 +373,8 @@ function loop(now) {
 	requestAnimationFrame(loop);
 }
 
+let triangleRotation = 0;
+
 /**
  * Update the world's state.
  * @param {number} delta - Time in seconds since the last frame was rendered.
@@ -402,6 +410,8 @@ function update(delta) {
 		heartRotationDegrees += heartRotationIncrement * delta;
 		let heartYDelta = Math.sin(timer * heartFrequency) * heartAmplitude;
 		heartPos[1] = heartAnchorY + (heartYDelta );
+
+		triangleRotation += heartRotationIncrement * delta;
 
 		timer += 1;
 	}
@@ -440,5 +450,16 @@ function render() {
 	modelViewMatrix = mult(modelViewMatrix, translate(-20, -14.5, 15));
 	gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
 	gl.drawArrays(gl.TRIANGLES, startIdx, (POT_VERTICES.length - 1) * 16 * 6);
+	modelViewMatrix = matrixStack.pop();
+
+	startIdx += (POT_VERTICES.length - 1) * 16 * 6;
+
+	matrixStack.push(modelViewMatrix);
+	modelViewMatrix = mult(modelViewMatrix, translate(0, 10, 5));
+	modelViewMatrix = mult(modelViewMatrix, rotate(triangleRotation, 1, 0, 0));
+	modelViewMatrix = mult(modelViewMatrix, rotate(triangleRotation, 0, 1, 0));
+	modelViewMatrix = mult(modelViewMatrix, rotate(triangleRotation, 0, 0, 1));
+	gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
+	gl.drawArrays(gl.TRIANGLES, startIdx, 24);
 	modelViewMatrix = matrixStack.pop();
 }
