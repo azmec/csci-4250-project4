@@ -448,7 +448,7 @@ function render() {
 	matrixStack.push(modelViewMatrix);
 	modelViewMatrix = mult(modelViewMatrix, translate(-20, -14.5, 15));
 	gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
-	gl.drawArrays(gl.TRIANGLES, startIdx, (POT_VERTICES.length - 1) * 16 * 6);
+	drawPot(startIdx);
 	modelViewMatrix = matrixStack.pop();
 
 	startIdx += (POT_VERTICES.length - 1) * 16 * 6;

@@ -21,6 +21,15 @@ const POT_VERTICES = [
 ];
 
 /**
+ * Draw a pot.
+ * @param {number} offset The index in the global points array at which the
+ *                        pot's vertices begin.
+ */
+function drawPot(offset) {
+	gl.drawArrays(gl.TRIANGLES, offset, (POT_VERTICES.length - 1) * 16 * 6);
+}
+
+/**
  * Return the points composing the surface of revolution resulting from the
  * polyline composed by `vertices`. The surface is composed of `numSlices`.
  * @param {Array} vertices  - The points composing the polyline.
