@@ -443,8 +443,7 @@ function render() {
 	drawShrine(startIdx);
 	modelViewMatrix = matrixStack.pop();
 
-	// TODO: Abstract this increment away.
-	startIdx += (CUBE_FACES.length + 1728);
+	startIdx += NUM_SHRINE_VERTICES;
 
 	matrixStack.push(modelViewMatrix);
 	modelViewMatrix = mult(modelViewMatrix, translate(-20, -14.5, 15));

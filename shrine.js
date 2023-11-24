@@ -19,6 +19,8 @@ const SHRINE_MATERIAL_SHININESS = 10.0;
 const SHRINE_COLUMN_SCALE  = vec3(2.0, 16.0, 2.0);
 const SHRINE_COLUMN_OFFSET = vec3(2, -8, 2);
 
+const NUM_SHRINE_VERTICES = CUBE_FACES.length + 1728;
+
 /**
  * Return the vertices composing a shrine or pedestal.
  * @returns The vertices composing a shrine or pedestal.
