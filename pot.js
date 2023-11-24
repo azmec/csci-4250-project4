@@ -20,13 +20,19 @@ const POT_VERTICES = [
 	vec3(0.0,  -8.0, 0), // P
 ];
 
+// Number of vertical slices composing the pot.
+const NUM_POT_SLICES = 16;
+
+// Number of vertices composing the pot.
+const NUM_POT_VERTICES = (POT_VERTICES.length - 1) * NUM_POT_SLICES * 6;
+
 /**
  * Draw a pot.
  * @param {number} offset The index in the global points array at which the
  *                        pot's vertices begin.
  */
 function drawPot(offset) {
-	gl.drawArrays(gl.TRIANGLES, offset, (POT_VERTICES.length - 1) * 16 * 6);
+	gl.drawArrays(gl.TRIANGLES, offset, NUM_POT_VERTICES);
 }
 
 /**

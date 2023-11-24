@@ -113,7 +113,7 @@ function main() {
 	normalsArray = normalsArray.concat(shrineNormals);
 
 	// Add the vertices for the pot (surface of revolution).
-	let potPoints = generateSurfaceOfRevolution(POT_VERTICES, 16);
+	let potPoints = generateSurfaceOfRevolution(POT_VERTICES, NUM_POT_SLICES);
 	let potNormals = generateNormals(potPoints);
 	pointsArray = pointsArray.concat(potPoints);
 	normalsArray = normalsArray.concat(potNormals);
@@ -451,7 +451,7 @@ function render() {
 	drawPot(startIdx);
 	modelViewMatrix = matrixStack.pop();
 
-	startIdx += (POT_VERTICES.length - 1) * 16 * 6;
+	startIdx += NUM_POT_VERTICES 
 
 	matrixStack.push(modelViewMatrix);
 	modelViewMatrix = mult(modelViewMatrix, translate(0, 10, 5));
