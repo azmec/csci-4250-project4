@@ -1,3 +1,11 @@
+/**
+ * Material definitions for the pot.
+ */
+const POT_MATERIAL_AMBIENT   = vec4(0.8, 0.7, 0.5, 1.0);
+const POT_MATERIAL_DIFFUSE   = vec4(0.8, 0.7, 0.5, 1.0);
+const POT_MATERIAL_SPECULAR  = vec4(0.1, 0.1, 0.1, 1.0);
+const POT_MATERIAL_SHININESS = 10.0;
+
 const POT_VERTICES = [
 	// Outer face of the pot.
 	vec3(0.0, -8.5, 0), // A
@@ -32,6 +40,11 @@ const NUM_POT_VERTICES = (POT_VERTICES.length - 1) * NUM_POT_SLICES * 6;
  *                        pot's vertices begin.
  */
 function drawPot(offset) {
+	setMaterial(
+		POT_MATERIAL_AMBIENT, POT_MATERIAL_DIFFUSE, 
+		POT_MATERIAL_SPECULAR, POT_MATERIAL_SHININESS
+	);
+
 	gl.drawArrays(gl.TRIANGLES, offset, NUM_POT_VERTICES);
 }
 
