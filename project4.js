@@ -14,16 +14,16 @@ const ORTHO_Y_MAX =  8;
 const ORTHO_Y_MIN = -8;
 const ORTHO_X_MAX =  8;
 const ORTHO_X_MIN = -8;
-const ORTHO_NEAR  = -50;
-const ORTHO_FAR   =  50;
+const ORTHO_NEAR  = -100;
+const ORTHO_FAR   =  100;
 
 /**
  * Light property definitions.
  */
 const LIGHT_AMBIENT  = vec4(0.1, 0.1, 0.1, 1.0);
-const LIGHT_DIFFUSE  = vec4(0.8, 0.5, 0.5, 1.0);
-const LIGHT_SPECULAR = vec4(0.0, 1.0, 1.0, 1.0);
-const LIGHT_POSTIION = vec4(0, 40, 30, 0.0);
+const LIGHT_DIFFUSE  = vec4(0.5, 0.5, 0.5, 1.0);
+const LIGHT_SPECULAR = vec4(0.4, 0.4, 0.7, 1.0);
+const LIGHT_POSTIION = vec4(30, 40, 40, 0.0);
 
 // Point at which the camera looks.
 const LOOK_AT_POINT = vec3(0, 0, 0);
@@ -100,6 +100,12 @@ function main() {
 		alert("WebGL isn't available");
 		return;
 	}
+
+	// Add vertices and normals for the wall.
+	let wallVertices = generateWallVertices();
+	let wallNormals = generateNormals(wallVertices);
+	pointsArray = pointsArray.concat(wallVertices);
+	normalsArray = normalsArray.concat(wallNormals);
 
 	// Add the vertices and normals for the heart.
 	pointsArray = pointsArray.concat(HEART_FACES);
@@ -425,6 +431,32 @@ function render() {
 
 	// Index into the `pointsArray` and `normalsArray`.
 	let startIdx = 0;
+
+	// Draw the wall
+	matrixStack.push(modelViewMatrix);
+	modelViewMatrix = mult(modelViewMatrix, translate(0, -24, 0));
+	modelViewMatrix = mult(modelViewMatrix, scale4(30, 1, 30));
+	drawWall(startIdx);
+	modelViewMatrix = matrixStack.pop();
+
+	// Draw left-back wall
+	matrixStack.push(modelViewMatrix);
+	modelViewMatrix = mult(modelViewMatrix, translate(-29, 6, 0));
+	modelViewMatrix = mult(modelViewMatrix, rotate(90, 0, 0, 1));
+	modelViewMatrix = mult(modelViewMatrix, scale4(30, 1, 30));
+	drawWall(startIdx);
+	modelViewMatrix = matrixStack.pop();
+
+	// Draw right-back wall
+	matrixStack.push(modelViewMatrix);
+	modelViewMatrix = mult(modelViewMatrix, translate(0, 6, -29));
+	modelViewMatrix = mult(modelViewMatrix, rotate(90, 0, 1, 0));
+	modelViewMatrix = mult(modelViewMatrix, rotate(90, 0, 0, 1));
+	modelViewMatrix = mult(modelViewMatrix, scale4(30, 1, 30));
+	drawWall(startIdx);
+	modelViewMatrix = matrixStack.pop();
+
+	startIdx += NUM_WALL_VERTICES;
 
 	// Draw the three-dimensional heart.
 	matrixStack.push(modelViewMatrix);
