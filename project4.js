@@ -389,8 +389,6 @@ function loop(now) {
 	requestAnimationFrame(loop);
 }
 
-let chestRotate = 0;
-
 /**
  * Update the world's state.
  * @param {number} delta - Time in seconds since the last frame was rendered.
@@ -426,8 +424,6 @@ function update(delta) {
 		heartRotationDegrees += heartRotationIncrement * delta;
 		let heartYDelta = Math.sin(timer * heartFrequency) * heartAmplitude;
 		heartPos[1] = heartAnchorY + (heartYDelta );
-
-		chestRotate += heartRotationIncrement * delta;
 
 		timer += 1;
 	}
@@ -487,6 +483,7 @@ function render() {
 
 	startIdx += NUM_SHRINE_VERTICES;
 
+	// Draw the pot.
 	matrixStack.push(modelViewMatrix);
 	modelViewMatrix = mult(modelViewMatrix, translate(-20, -14.5, 15));
 	gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
@@ -495,14 +492,13 @@ function render() {
 
 	startIdx += NUM_POT_VERTICES 
 
+	// Draw the chest.
 	matrixStack.push(modelViewMatrix);
-	//modelViewMatrix = mult(modelViewMatrix, translate(-13, -15.5, -13));
-	modelViewMatrix = mult(modelViewMatrix, rotate(chestRotate, 1, 0, 0));
-	modelViewMatrix = mult(modelViewMatrix, rotate(chestRotate, 0, 1, 0));
-	modelViewMatrix = mult(modelViewMatrix, rotate(chestRotate, 0, 0, 1));
+	modelViewMatrix = mult(modelViewMatrix, translate(-13, -15.5, -13));
+	modelViewMatrix = mult(modelViewMatrix, rotate(-45, 0, 1, 0));
 	modelViewMatrix = mult(modelViewMatrix, scale4(4, 5, 10));
-	modelViewMatrix = mult(modelViewMatrix, translate(2, -1.5, -1));
-	gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
-	gl.drawArrays(gl.TRIANGLES, startIdx, 60);
+	drawChest(startIdx)
 	modelViewMatrix = matrixStack.pop();
+
+	startIdx += NUM_CHEST_VERTICES;
 }
