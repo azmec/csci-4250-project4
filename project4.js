@@ -283,6 +283,11 @@ function initHtmlButtons() {
 	document.getElementById("phidown").addEventListener("click", function(_) {
 		AllInfo.phi -= AllInfo.dr;
 	});
+
+	// Toggle animation when corresponding button is clicked.
+	document.getElementById("animate").addEventListener("click", function(_) {
+		playAnimation = !playAnimation;
+	});
 }
 
 /**
