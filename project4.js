@@ -73,7 +73,7 @@ var matrixStack = [];
 // Global namespace for camera control.
 let AllInfo = {
 	// Properties controlling the camera's zoom and position.
-	zoomFactor: 5,
+	zoomFactor: 8,
 	translateX: 0,
 	translateY: 0,
 
