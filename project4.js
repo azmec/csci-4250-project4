@@ -56,7 +56,7 @@ let heartFrequency = 0.01;
 // Amplitude of the wave the heart bobs along during animation.
 let heartAmplitude = 2.0;
 
-let heartPos = vec3(0, heartAnchorY, 0);
+let heartPos = vec3(0, heartAnchorY, -20);
 let heartRotationDegrees = 0.0;
 let heartRotationIncrement = 45.0;
 
@@ -476,7 +476,7 @@ function render() {
 
 	// Draw the shrine/pedestal.
 	matrixStack.push(modelViewMatrix);
-	modelViewMatrix = mult(modelViewMatrix, translate(0, -10, 0));
+	modelViewMatrix = mult(modelViewMatrix, translate(heartX, -10, heartZ));
 	drawShrine(startIdx);
 	modelViewMatrix = matrixStack.pop();
 
