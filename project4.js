@@ -56,7 +56,7 @@ let heartFrequency = 0.01;
 // Amplitude of the wave the heart bobs along during animation.
 let heartAmplitude = 2.0;
 
-let heartPos = vec3(0, heartAnchorY, -20);
+let heartPos = vec3(10, heartAnchorY, -20);
 let heartRotationDegrees = 0.0;
 let heartRotationIncrement = 45.0;
 
@@ -123,6 +123,11 @@ function main() {
 	let potNormals = generateNormals(potPoints);
 	pointsArray = pointsArray.concat(potPoints);
 	normalsArray = normalsArray.concat(potNormals);
+
+	let chestPoints = generateChestVertices();
+	let chestNormals = generateNormals(chestPoints);
+	pointsArray = pointsArray.concat(chestPoints);
+	normalsArray = normalsArray.concat(chestNormals);
 
 	let beegPoints = generatedExtrudedVertices(BEEG_CUBE_VERTICES, -10);
 	let beegNormals = generateNormals(beegPoints);
@@ -384,7 +389,7 @@ function loop(now) {
 	requestAnimationFrame(loop);
 }
 
-let triangleRotation = 0;
+let chestRotate = 0;
 
 /**
  * Update the world's state.
@@ -422,7 +427,7 @@ function update(delta) {
 		let heartYDelta = Math.sin(timer * heartFrequency) * heartAmplitude;
 		heartPos[1] = heartAnchorY + (heartYDelta );
 
-		triangleRotation += heartRotationIncrement * delta;
+		chestRotate += heartRotationIncrement * delta;
 
 		timer += 1;
 	}
@@ -491,11 +496,13 @@ function render() {
 	startIdx += NUM_POT_VERTICES 
 
 	matrixStack.push(modelViewMatrix);
-	modelViewMatrix = mult(modelViewMatrix, translate(0, 10, 5));
-	modelViewMatrix = mult(modelViewMatrix, rotate(triangleRotation, 1, 0, 0));
-	modelViewMatrix = mult(modelViewMatrix, rotate(triangleRotation, 0, 1, 0));
-	modelViewMatrix = mult(modelViewMatrix, rotate(triangleRotation, 0, 0, 1));
+	//modelViewMatrix = mult(modelViewMatrix, translate(-13, -15.5, -13));
+	modelViewMatrix = mult(modelViewMatrix, rotate(chestRotate, 1, 0, 0));
+	modelViewMatrix = mult(modelViewMatrix, rotate(chestRotate, 0, 1, 0));
+	modelViewMatrix = mult(modelViewMatrix, rotate(chestRotate, 0, 0, 1));
+	modelViewMatrix = mult(modelViewMatrix, scale4(4, 5, 10));
+	modelViewMatrix = mult(modelViewMatrix, translate(2, -1.5, -1));
 	gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
-	gl.drawArrays(gl.TRIANGLES, startIdx, 24);
+	gl.drawArrays(gl.TRIANGLES, startIdx, 60);
 	modelViewMatrix = matrixStack.pop();
 }
