@@ -129,11 +129,11 @@ function main() {
 	pointsArray = pointsArray.concat(chestPoints);
 	normalsArray = normalsArray.concat(chestNormals);
 
-	let beegPoints = generatedExtrudedVertices(BEEG_CUBE_VERTICES, -10);
-	let beegNormals = generateNormals(beegPoints);
-	console.log(beegNormals);
-	pointsArray = pointsArray.concat(beegPoints);
-	normalsArray = normalsArray.concat(beegNormals);
+	let swordPoints = generateSwordVertices();
+	console.log(swordPoints.length);
+	let swordNormals = generateNormals(swordPoints);
+	pointsArray = pointsArray.concat(swordPoints);
+	normalsArray = normalsArray.concat(swordNormals);
 
 	// Initailize the WebGL context.
 	initWebGL();
@@ -389,6 +389,8 @@ function loop(now) {
 	requestAnimationFrame(loop);
 }
 
+let testRotation = 0;
+
 /**
  * Update the world's state.
  * @param {number} delta - Time in seconds since the last frame was rendered.
@@ -424,6 +426,8 @@ function update(delta) {
 		heartRotationDegrees += heartRotationIncrement * delta;
 		let heartYDelta = Math.sin(timer * heartFrequency) * heartAmplitude;
 		heartPos[1] = heartAnchorY + (heartYDelta );
+
+		testRotation += heartRotationIncrement * delta;
 
 		timer += 1;
 	}
@@ -501,4 +505,18 @@ function render() {
 	modelViewMatrix = matrixStack.pop();
 
 	startIdx += NUM_CHEST_VERTICES;
+
+	// Draw the sword.
+	matrixStack.push(modelViewMatrix);
+	modelViewMatrix = mult(modelViewMatrix, translate(0, 10, 0));
+	modelViewMatrix = mult(modelViewMatrix, scale4(4, 4, 4));
+	modelViewMatrix = mult(modelViewMatrix, rotate(testRotation, 1, 0, 0));
+	modelViewMatrix = mult(modelViewMatrix, rotate(testRotation, 0, 1, 0));
+	modelViewMatrix = mult(modelViewMatrix, rotate(testRotation, 0, 0, 1));
+	gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
+	gl.drawArrays(gl.TRIANGLES, startIdx, NUM_SWORD_VERTICES)
+	modelViewMatrix = matrixStack.pop();
+
+	startIdx += NUM_SWORD_VERTICES;
+
 }
