@@ -508,13 +508,9 @@ function render() {
 
 	// Draw the sword.
 	matrixStack.push(modelViewMatrix);
-	modelViewMatrix = mult(modelViewMatrix, translate(0, 10, 0));
-	modelViewMatrix = mult(modelViewMatrix, scale4(4, 4, 4));
-	modelViewMatrix = mult(modelViewMatrix, rotate(testRotation, 1, 0, 0));
-	modelViewMatrix = mult(modelViewMatrix, rotate(testRotation, 0, 1, 0));
-	modelViewMatrix = mult(modelViewMatrix, rotate(testRotation, 0, 0, 1));
-	gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
-	gl.drawArrays(gl.TRIANGLES, startIdx, NUM_SWORD_VERTICES)
+	modelViewMatrix = mult(modelViewMatrix, translate(20, 4.0, -26.5));
+	modelViewMatrix = mult(modelViewMatrix, rotate(75, 1, 0, 0));
+	drawSword(startIdx);
 	modelViewMatrix = matrixStack.pop();
 
 	startIdx += NUM_SWORD_VERTICES;
