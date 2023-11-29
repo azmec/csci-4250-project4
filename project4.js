@@ -140,6 +140,11 @@ function main() {
 	pointsArray = pointsArray.concat(chalicePoints);
 	normalsArray = normalsArray.concat(chaliceNormals);
 
+	let cobblePoints = generatedExtrudedVertices(BEEG_CUBE_VERTICES, 5.0);
+	let cobbleNormals = generateNormals(cobblePoints);
+	pointsArray = pointsArray.concat(cobblePoints);
+	normalsArray = normalsArray.concat(cobbleNormals);
+
 	// Initailize the WebGL context.
 	initWebGL();
 
@@ -520,11 +525,67 @@ function render() {
 
 	startIdx += NUM_SWORD_VERTICES;
 
+	matrixStack.push(modelViewMatrix);
 	modelViewMatrix = mult(modelViewMatrix, translate(-8, -21.0, -2));
 	modelViewMatrix = mult(modelViewMatrix, rotate(-45, 0, 1, 0));
 	modelViewMatrix = mult(modelViewMatrix, rotate(85, 1, 0, 0));
 	modelViewMatrix = mult(modelViewMatrix, scale4(0.5, 0.5, 0.5));
 	gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
 	gl.drawArrays(gl.TRIANGLES, startIdx, NUM_CHALICE_VERTICES);
+	modelViewMatrix = matrixStack.pop();
 
+	startIdx += NUM_CHALICE_VERTICES;
+
+
+	matrixStack.push(modelViewMatrix);
+	modelViewMatrix = mult(modelViewMatrix, translate(-25, -20, 0));
+
+	let foo = -5;
+	for (let y = 0; y < 8; y++) {
+		for (let x = 0; x < 4; x++) {
+			matrixStack.push(modelViewMatrix);
+
+			const WIDTH = 16;
+			const HEIGHT = 8;
+
+			modelViewMatrix = mult(modelViewMatrix, translate(x * WIDTH + foo, y * HEIGHT, -28)); // Center origin
+
+			// Modeling transformations
+			modelViewMatrix = mult(modelViewMatrix, scale4(7.5, 3.5, 0.5));
+			modelViewMatrix = mult(modelViewMatrix, rotate(90, 1, 0, 0));
+			modelViewMatrix = mult(modelViewMatrix, translate(0, -2.5, 0)); // Center origin
+			gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
+			gl.drawArrays(gl.TRIANGLES, startIdx, NUM_COBBLE_VERTICES);
+
+			modelViewMatrix = matrixStack.pop();
+		}
+
+		foo *= -1;
+	}
+
+	modelViewMatrix = mult(modelViewMatrix, translate(25, 0, 30));
+	modelViewMatrix = mult(modelViewMatrix, rotate(90, 0, 1, 0));
+	for (let y = 0; y < 8; y++) {
+		for (let x = 0; x < 4; x++) {
+			matrixStack.push(modelViewMatrix);
+
+			const WIDTH = 16;
+			const HEIGHT = 8;
+
+			modelViewMatrix = mult(modelViewMatrix, translate(x * WIDTH + foo, y * HEIGHT, -28)); // Center origin
+
+			// Modeling transformations
+			modelViewMatrix = mult(modelViewMatrix, scale4(7.5, 3.5, 0.5));
+			modelViewMatrix = mult(modelViewMatrix, rotate(90, 1, 0, 0));
+			modelViewMatrix = mult(modelViewMatrix, translate(0, -2.5, 0)); // Center origin
+			gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
+			gl.drawArrays(gl.TRIANGLES, startIdx, NUM_COBBLE_VERTICES);
+
+			modelViewMatrix = matrixStack.pop();
+		}
+
+		foo *= -1;
+	}
+
+	modelViewMatrix = matrixStack.pop();
 }
