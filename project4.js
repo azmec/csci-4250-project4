@@ -536,56 +536,14 @@ function render() {
 
 	startIdx += NUM_CHALICE_VERTICES;
 
+	matrixStack.push(modelViewMatrix);
+	modelViewMatrix = mult(modelViewMatrix, translate(-20, -20, -28));
+	drawCobblestoneWall(startIdx, 4, 8);
+	modelViewMatrix = matrixStack.pop();
 
 	matrixStack.push(modelViewMatrix);
-	modelViewMatrix = mult(modelViewMatrix, translate(-25, -20, 0));
-
-	let foo = -5;
-	for (let y = 0; y < 8; y++) {
-		for (let x = 0; x < 4; x++) {
-			matrixStack.push(modelViewMatrix);
-
-			const WIDTH = 16;
-			const HEIGHT = 8;
-
-			modelViewMatrix = mult(modelViewMatrix, translate(x * WIDTH + foo, y * HEIGHT, -28)); // Center origin
-
-			// Modeling transformations
-			modelViewMatrix = mult(modelViewMatrix, scale4(7.5, 3.5, 0.5));
-			modelViewMatrix = mult(modelViewMatrix, rotate(90, 1, 0, 0));
-			modelViewMatrix = mult(modelViewMatrix, translate(0, -2.5, 0)); // Center origin
-			gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
-			gl.drawArrays(gl.TRIANGLES, startIdx, NUM_COBBLE_VERTICES);
-
-			modelViewMatrix = matrixStack.pop();
-		}
-
-		foo *= -1;
-	}
-
-	modelViewMatrix = mult(modelViewMatrix, translate(25, 0, 30));
+	modelViewMatrix = mult(modelViewMatrix, translate(-28, -20, 28));
 	modelViewMatrix = mult(modelViewMatrix, rotate(90, 0, 1, 0));
-	for (let y = 0; y < 8; y++) {
-		for (let x = 0; x < 4; x++) {
-			matrixStack.push(modelViewMatrix);
-
-			const WIDTH = 16;
-			const HEIGHT = 8;
-
-			modelViewMatrix = mult(modelViewMatrix, translate(x * WIDTH + foo, y * HEIGHT, -28)); // Center origin
-
-			// Modeling transformations
-			modelViewMatrix = mult(modelViewMatrix, scale4(7.5, 3.5, 0.5));
-			modelViewMatrix = mult(modelViewMatrix, rotate(90, 1, 0, 0));
-			modelViewMatrix = mult(modelViewMatrix, translate(0, -2.5, 0)); // Center origin
-			gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
-			gl.drawArrays(gl.TRIANGLES, startIdx, NUM_COBBLE_VERTICES);
-
-			modelViewMatrix = matrixStack.pop();
-		}
-
-		foo *= -1;
-	}
-
+	drawCobblestoneWall(startIdx, 4, 8);
 	modelViewMatrix = matrixStack.pop();
 }
