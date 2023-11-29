@@ -518,7 +518,7 @@ function render() {
 
 	// Draw the sword.
 	matrixStack.push(modelViewMatrix);
-	modelViewMatrix = mult(modelViewMatrix, translate(20, 4.0, -26.5));
+	modelViewMatrix = mult(modelViewMatrix, translate(20, 4.0, -25.5));
 	modelViewMatrix = mult(modelViewMatrix, rotate(75, 1, 0, 0));
 	drawSword(startIdx);
 	modelViewMatrix = matrixStack.pop();
