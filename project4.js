@@ -452,27 +452,27 @@ function render() {
 	// Index into the `pointsArray` and `normalsArray`.
 	let startIdx = 0;
 
-	// Draw the wall
+	// Draw the floor.
 	matrixStack.push(modelViewMatrix);
-	modelViewMatrix = mult(modelViewMatrix, translate(0, -24, 0));
-	modelViewMatrix = mult(modelViewMatrix, scale4(30, 1, 30));
+	modelViewMatrix = mult(modelViewMatrix, translate(1, -24, 1));
+	modelViewMatrix = mult(modelViewMatrix, scale4(35, 1, 35));
 	drawWall(startIdx);
 	modelViewMatrix = matrixStack.pop();
 
 	// Draw left-back wall
 	matrixStack.push(modelViewMatrix);
-	modelViewMatrix = mult(modelViewMatrix, translate(-29, 6, 0));
+	modelViewMatrix = mult(modelViewMatrix, translate(-31, 8, 0));
 	modelViewMatrix = mult(modelViewMatrix, rotate(90, 0, 0, 1));
-	modelViewMatrix = mult(modelViewMatrix, scale4(30, 1, 30));
+	modelViewMatrix = mult(modelViewMatrix, scale4(32, 3, 34));
 	drawWall(startIdx);
 	modelViewMatrix = matrixStack.pop();
 
 	// Draw right-back wall
 	matrixStack.push(modelViewMatrix);
-	modelViewMatrix = mult(modelViewMatrix, translate(0, 6, -29));
+	modelViewMatrix = mult(modelViewMatrix, translate(0, 8, -31));
 	modelViewMatrix = mult(modelViewMatrix, rotate(90, 0, 1, 0));
 	modelViewMatrix = mult(modelViewMatrix, rotate(90, 0, 0, 1));
-	modelViewMatrix = mult(modelViewMatrix, scale4(30, 1, 30));
+	modelViewMatrix = mult(modelViewMatrix, scale4(32, 3, 34));
 	drawWall(startIdx);
 	modelViewMatrix = matrixStack.pop();
 
