@@ -525,6 +525,7 @@ function render() {
 
 	startIdx += NUM_SWORD_VERTICES;
 
+	// Draw the chalice.
 	matrixStack.push(modelViewMatrix);
 	modelViewMatrix = mult(modelViewMatrix, translate(-8, -21.0, -2));
 	modelViewMatrix = mult(modelViewMatrix, rotate(-45, 0, 1, 0));
@@ -536,11 +537,13 @@ function render() {
 
 	startIdx += NUM_CHALICE_VERTICES;
 
+	// Draw the back-right cobblestone wall.
 	matrixStack.push(modelViewMatrix);
 	modelViewMatrix = mult(modelViewMatrix, translate(-20, -20, -28));
 	drawCobblestoneWall(startIdx, 4, 8);
 	modelViewMatrix = matrixStack.pop();
 
+	// Draw the back-left cobblestone wall.
 	matrixStack.push(modelViewMatrix);
 	modelViewMatrix = mult(modelViewMatrix, translate(-28, -20, 28));
 	modelViewMatrix = mult(modelViewMatrix, rotate(90, 0, 1, 0));
