@@ -34,6 +34,39 @@ const NUM_POT_SLICES = 16;
 // Number of vertices composing the pot.
 const NUM_POT_VERTICES = (POT_VERTICES.length - 1) * NUM_POT_SLICES * 6;
 
+const CHALICE_VERTICES = [
+	// Outer-surface of the chalice.
+	vec3(0  , 0   , 0), // A
+	vec3(4  , 0   , 0), // B
+	vec3(3.5, 1   , 0), // C
+	vec3(1  , 1.5 , 0), // D
+	vec3(1  , 4   , 0), // E
+	vec3(1.2, 4   , 0), // F
+	vec3(1.2, 6   , 0), // G
+	vec3(1  , 6   , 0), // H
+	vec3(1  , 7.5 , 0), // I
+	vec3(1.2, 7.5 , 0), // J
+	vec3(1.2, 7.7 , 0), // K
+	vec3(2  , 8   , 0), // L
+	vec3(3  , 9   , 0), // M
+	vec3(4  , 11  , 0), // N
+	vec3(5, 13  , 0), // 0
+	vec3(5, 14  , 0), // P
+	vec3(5.2, 14, 0), // Q
+	vec3(5.2, 14.2, 0), // R
+	vec3(5  , 14.2, 0), // S
+
+	// Inner-surface of the chalice.
+	vec3(4, 11, 0), // T
+	vec3(2, 9, 0), // U
+	vec3(1, 8, 0), // V
+	vec3(0, 8, 0), // W
+];
+
+const NUM_CHALICE_SLICES = 8;
+
+const NUM_CHALICE_VERTICES = (CHALICE_VERTICES.length - 1) * NUM_CHALICE_SLICES * 6;
+
 /**
  * Draw a pot.
  * @param {number} offset The index in the global points array at which the

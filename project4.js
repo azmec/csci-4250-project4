@@ -135,6 +135,11 @@ function main() {
 	pointsArray = pointsArray.concat(swordPoints);
 	normalsArray = normalsArray.concat(swordNormals);
 
+	let chalicePoints = generateSurfaceOfRevolution(CHALICE_VERTICES, NUM_CHALICE_SLICES);
+	let chaliceNormals = generateNormals(chalicePoints);
+	pointsArray = pointsArray.concat(chalicePoints);
+	normalsArray = normalsArray.concat(chaliceNormals);
+
 	// Initailize the WebGL context.
 	initWebGL();
 
@@ -514,5 +519,12 @@ function render() {
 	modelViewMatrix = matrixStack.pop();
 
 	startIdx += NUM_SWORD_VERTICES;
+
+	modelViewMatrix = mult(modelViewMatrix, translate(-8, -21.0, -2));
+	modelViewMatrix = mult(modelViewMatrix, rotate(-45, 0, 1, 0));
+	modelViewMatrix = mult(modelViewMatrix, rotate(85, 1, 0, 0));
+	modelViewMatrix = mult(modelViewMatrix, scale4(0.5, 0.5, 0.5));
+	gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
+	gl.drawArrays(gl.TRIANGLES, startIdx, NUM_CHALICE_VERTICES);
 
 }
