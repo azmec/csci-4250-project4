@@ -72,9 +72,9 @@ function generatePolygon(vertices) {
 	let previous = 1;
 	let next = 2;
 	for (let i = 0; i < (vertices.length - 2); i++) {
-		points.push(vertices[0]);
-		points.push(vertices[previous]);
 		points.push(vertices[next]);
+		points.push(vertices[previous]);
+		points.push(vertices[0]);
 
 		previous = next;
 		next = next + 1;
