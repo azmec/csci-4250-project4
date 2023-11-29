@@ -60,9 +60,9 @@ const NUM_SWORD_VERTICES = NUM_HILT_VERTICES + NUM_PUMMEL_VERTICES + NUM_HANDLE_
 /**
  * Blade material definitions.
  */
-const BLADE_MATERIAL_AMBIENT   = vec4(1.0, 1.0, 1.0, 1.0);
-const BLADE_MATERIAL_DIFFUSE   = vec4(1.0, 1.0, 1.0, 1.0);
-const BLADE_MATERIAL_SPECULAR  = vec4(1.0, 1.0, 1.0, 1.0);
+const BLADE_MATERIAL_AMBIENT   = vec4(0.8, 0.8, 0.8, 1.0);
+const BLADE_MATERIAL_DIFFUSE   = vec4(0.8, 0.8, 0.8, 1.0);
+const BLADE_MATERIAL_SPECULAR  = vec4(0.8, 0.8, 0.8, 1.0);
 const BLADE_MATERIAL_SHININESS = 30.0;
 
 /**
@@ -70,7 +70,7 @@ const BLADE_MATERIAL_SHININESS = 30.0;
  */
 const HILT_MATERIAL_AMBIENT   = vec4(0.8, 0.7, 0.3, 1.0);
 const HILT_MATERIAL_DIFFUSE   = vec4(0.8, 0.7, 0.3, 1.0);
-const HILT_MATERIAL_SPECULAR  = vec4(1.0, 1.0, 1.0, 1.0);
+const HILT_MATERIAL_SPECULAR  = vec4(0.4, 0.4, 0.4, 1.0);
 const HILT_MATERIAL_SHININESS = 30.0;
 
 /**
