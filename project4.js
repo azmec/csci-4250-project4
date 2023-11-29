@@ -145,6 +145,11 @@ function main() {
 	pointsArray = pointsArray.concat(cobblePoints);
 	normalsArray = normalsArray.concat(cobbleNormals);
 
+	let columnPoints = generateColumnVertices();
+	let columnNormals = generateNormals(columnPoints);
+	pointsArray = pointsArray.concat(columnPoints);
+	normalsArray = normalsArray.concat(columnNormals);
+
 	// Initailize the WebGL context.
 	initWebGL();
 
@@ -549,4 +554,39 @@ function render() {
 	modelViewMatrix = mult(modelViewMatrix, rotate(90, 0, 1, 0));
 	drawCobblestoneWall(startIdx, 4, 8);
 	modelViewMatrix = matrixStack.pop();
+
+	startIdx += NUM_COBBLE_VERTICES;
+
+	matrixStack.push(modelViewMatrix);
+	modelViewMatrix = mult(modelViewMatrix, translate(-30, 0, -30));
+	modelViewMatrix = mult(modelViewMatrix, rotate(90, 0, 1, 0));
+	drawColumn(startIdx);
+	modelViewMatrix = matrixStack.pop();
+
+	matrixStack.push(modelViewMatrix);
+	modelViewMatrix = mult(modelViewMatrix, translate(36, 0, -30));
+	modelViewMatrix = mult(modelViewMatrix, rotate(90, 0, 1, 0));
+	drawColumn(startIdx);
+	modelViewMatrix = matrixStack.pop();
+
+	matrixStack.push(modelViewMatrix);
+	modelViewMatrix = mult(modelViewMatrix, translate(-30, 0, 36));
+	modelViewMatrix = mult(modelViewMatrix, rotate(90, 0, 1, 0));
+	drawColumn(startIdx);
+	modelViewMatrix = matrixStack.pop();
+
+	/*
+	 * Drawing the top-trim like this is pretty dirty. We're using the
+	 * vertices for the column assuming they consist of entirely the
+	 * vertices of a unit cube when we should not have this knowledge.
+	 */
+
+	matrixStack.push(modelViewMatrix);
+	drawCube(startIdx, vec3(4, 40, -30), vec3(42, 4, 8));
+
+	modelViewMatrix = mult(modelViewMatrix, rotate(90, 0, 1, 0));
+	drawCube(startIdx, vec3(-12, 40, -30), vec3(34, 4, 8));
+
+	modelViewMatrix = matrixStack.pop();
+
 }

@@ -70,3 +70,23 @@ function drawCobblestone(offset) {
 
 	modelViewMatrix = matrixStack.pop();
 }
+
+function generateColumnVertices() {
+	let vertices = [];
+
+	vertices = vertices.concat(CUBE_FACES);
+
+	return vertices;
+}
+
+function drawColumn(offset) {
+	drawCube(offset, vec3(0, 8, 0), vec3(6, 30, 6));
+
+	drawCube(offset, vec3(0, -12, 0), vec3(7, 5, 7));
+	drawCube(offset, vec3(0, -1, 0), vec3(7, 5, 7));
+	drawCube(offset, vec3(0, 10, 0), vec3(7, 5, 7));
+	drawCube(offset, vec3(0, 21, 0), vec3(7, 5, 7));
+	drawCube(offset, vec3(0, 32, 0), vec3(7, 5, 7));
+
+	drawCube(offset, vec3(0, -20.5, 0), vec3(8, 2.5, 8));
+}
