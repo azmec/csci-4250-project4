@@ -1,3 +1,11 @@
+/**
+ * Heart material definitions.
+ */
+const COBBLE_MATERIAL_AMBIENT   = vec4(0.6, 0.6, 0.6, 1.0);
+const COBBLE_MATERIAL_DIFFUSE   = vec4(0.6, 0.6, 0.6, 1.0);
+const COBBLE_MATERIAL_SPECULAR  = vec4(0.1, 0.1, 0.1, 1.0);
+const COBBLE_MATERIAL_SHININESS = 30.0;
+
 const COBBLE_VERTICES = [
 	vec4(-1, 0,  1, 1), // A
 	vec4(-1, 0,  0, 1), // B
@@ -16,6 +24,11 @@ function generateCobblestoneVertices() {
 }
 
 function drawCobblestoneWall(offset, width, height) {
+	setMaterial(
+		COBBLE_MATERIAL_AMBIENT, COBBLE_MATERIAL_DIFFUSE, 
+		COBBLE_MATERIAL_SPECULAR, COBBLE_MATERIAL_SHININESS
+	);
+
 	matrixStack.push(modelViewMatrix);
 
 	let xOffset = COBBLESTONE_OFFSET;
