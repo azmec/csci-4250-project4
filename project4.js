@@ -101,55 +101,9 @@ function main() {
 		return;
 	}
 
-	// Add vertices and normals for the wall.
-	let wallVertices = generateWallVertices();
-	let wallNormals = generateNormals(wallVertices);
-	pointsArray = pointsArray.concat(wallVertices);
-	normalsArray = normalsArray.concat(wallNormals);
-
-	// Add the vertices and normals for the heart.
-	pointsArray = pointsArray.concat(HEART_FACES);
-	let heartNormals = generateNormals(HEART_FACES);
-	normalsArray = normalsArray.concat(heartNormals);
-
-	// Add the vertices and normals for the shrine.
-	let shrinePoints = generateShrineVertices();
-	let shrineNormals = generateNormals(shrinePoints);
-	pointsArray = pointsArray.concat(shrinePoints);
-	normalsArray = normalsArray.concat(shrineNormals);
-
-	// Add the vertices for the pot (surface of revolution).
-	let potPoints = generateSurfaceOfRevolution(POT_VERTICES, NUM_POT_SLICES);
-	let potNormals = generateNormals(potPoints);
-	pointsArray = pointsArray.concat(potPoints);
-	normalsArray = normalsArray.concat(potNormals);
-
-	let chestPoints = generateChestVertices();
-	let chestNormals = generateNormals(chestPoints);
-	pointsArray = pointsArray.concat(chestPoints);
-	normalsArray = normalsArray.concat(chestNormals);
-
-	let swordPoints = generateSwordVertices();
-	console.log(swordPoints.length);
-	let swordNormals = generateNormals(swordPoints);
-	pointsArray = pointsArray.concat(swordPoints);
-	normalsArray = normalsArray.concat(swordNormals);
-
-	let chalicePoints = generateSurfaceOfRevolution(CHALICE_VERTICES, NUM_CHALICE_SLICES);
-	let chaliceNormals = generateNormals(chalicePoints);
-	pointsArray = pointsArray.concat(chalicePoints);
-	normalsArray = normalsArray.concat(chaliceNormals);
-
-	let cobblePoints = generatedExtrudedVertices(BEEG_CUBE_VERTICES, 5.0);
-	let cobbleNormals = generateNormals(cobblePoints);
-	pointsArray = pointsArray.concat(cobblePoints);
-	normalsArray = normalsArray.concat(cobbleNormals);
-
-	let columnPoints = generateColumnVertices();
-	let columnNormals = generateNormals(columnPoints);
-	pointsArray = pointsArray.concat(columnPoints);
-	normalsArray = normalsArray.concat(columnNormals);
-
+	// Initialize the vertices and normals of all drawable objects.
+	initDrawables();
+	
 	// Initailize the WebGL context.
 	initWebGL();
 
@@ -159,6 +113,82 @@ function main() {
 	initHtmlMouseControls();
 
 	requestAnimationFrame(loop);
+}
+
+/**
+ * Populate the global points and normal arrays with those of all drawable objects.
+ */
+function initDrawables() {
+	/*
+	 * Add vertices and normals for the walls.
+	 */
+	let wallVertices = generateWallVertices();
+	let wallNormals = generateNormals(wallVertices);
+	pointsArray = pointsArray.concat(wallVertices);
+	normalsArray = normalsArray.concat(wallNormals);
+
+	/*
+	 * Add vertices and normals for the heart.
+	 */
+	pointsArray = pointsArray.concat(HEART_FACES);
+	let heartNormals = generateNormals(HEART_FACES);
+	normalsArray = normalsArray.concat(heartNormals);
+
+	/*
+	 * Add vertices and normals for the pedestal.
+	 */
+	let shrinePoints = generateShrineVertices();
+	let shrineNormals = generateNormals(shrinePoints);
+	pointsArray = pointsArray.concat(shrinePoints);
+	normalsArray = normalsArray.concat(shrineNormals);
+
+	/*
+	 * Add vertices and normals for the pot.
+	 */
+	let potPoints = generateSurfaceOfRevolution(POT_VERTICES, NUM_POT_SLICES);
+	let potNormals = generateNormals(potPoints);
+	pointsArray = pointsArray.concat(potPoints);
+	normalsArray = normalsArray.concat(potNormals);
+
+	/*
+	 * Add vertices and normals for the chest.
+	 */
+	let chestPoints = generateChestVertices();
+	let chestNormals = generateNormals(chestPoints);
+	pointsArray = pointsArray.concat(chestPoints);
+	normalsArray = normalsArray.concat(chestNormals);
+
+	/*
+	 * Add vertices and normals for the sword.
+	 */
+	let swordPoints = generateSwordVertices();
+	let swordNormals = generateNormals(swordPoints);
+	pointsArray = pointsArray.concat(swordPoints);
+	normalsArray = normalsArray.concat(swordNormals);
+
+	/*
+	 * Add vertices and normals for the chalice.
+	 */
+	let chalicePoints = generateSurfaceOfRevolution(CHALICE_VERTICES, NUM_CHALICE_SLICES);
+	let chaliceNormals = generateNormals(chalicePoints);
+	pointsArray = pointsArray.concat(chalicePoints);
+	normalsArray = normalsArray.concat(chaliceNormals);
+
+	/*
+	 * Add vertices and normals for the cobblestone.
+	 */
+	let cobblePoints = generatedExtrudedVertices(BEEG_CUBE_VERTICES, 5.0);
+	let cobbleNormals = generateNormals(cobblePoints);
+	pointsArray = pointsArray.concat(cobblePoints);
+	normalsArray = normalsArray.concat(cobbleNormals);
+
+	/*
+	 * Add vertices and normals for the columns.
+	 */
+	let columnPoints = generateColumnVertices();
+	let columnNormals = generateNormals(columnPoints);
+	pointsArray = pointsArray.concat(columnPoints);
+	normalsArray = normalsArray.concat(columnNormals);
 }
 
 /**
