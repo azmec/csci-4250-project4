@@ -18,6 +18,13 @@ const ORTHO_NEAR  = -100;
 const ORTHO_FAR   =  100;
 
 /**
+ * Constants defining the absence of transformation when necessary.
+ */
+const NO_TRANSLATE = vec3(0, 0, 0);
+const NO_ROTATE    = vec4(0, 0, 0, 1);
+const NO_SCALE     = vec3(1, 1, 1);
+
+/**
  * Light property definitions.
  */
 const LIGHT_AMBIENT  = vec4(0.1, 0.1, 0.1, 1.0);
@@ -189,6 +196,14 @@ function initDrawables() {
 	let columnNormals = generateNormals(columnPoints);
 	pointsArray = pointsArray.concat(columnPoints);
 	normalsArray = normalsArray.concat(columnNormals);
+
+	/*
+	 * Add vertices and normals for the wall-trim.
+	 */
+	let wallTrimPoints = generateWallTrimVerices();
+	let wallTrimNormals = generateNormals(wallTrimPoints);
+	pointsArray = pointsArray.concat(wallTrimPoints);
+	normalsArray = normalsArray.concat(wallTrimNormals);
 }
 
 /**
@@ -608,17 +623,13 @@ function render() {
 	drawColumn(startIdx);
 	modelViewMatrix = matrixStack.pop();
 
+	startIdx += NUM_WALL_VERTICES;
+
 	/*
-	 * Drawing the top-trim like this is pretty dirty. We're using the
-	 * vertices for the column assuming they consist of entirely the
-	 * vertices of a unit cube when we should not have this knowledge.
+	 * Draw the trim on the top of the walls.
 	 */
+	drawWallTrim(startIdx, vec3(4, 40, -30), NO_ROTATE, vec3(42, 4, 8));
+	drawWallTrim(startIdx, vec3(-30, 40, 12), vec4(90, 0, 1, 0), vec3(34, 4, 8));
 
-	matrixStack.push(modelViewMatrix);
-	drawCube(startIdx, vec3(4, 40, -30), vec3(42, 4, 8));
-
-	modelViewMatrix = mult(modelViewMatrix, rotate(90, 0, 1, 0));
-	drawCube(startIdx, vec3(-12, 40, -30), vec3(34, 4, 8));
-
-	modelViewMatrix = matrixStack.pop();
+	startIdx += NUM_WALL_TRIM_VERTICES;
 }

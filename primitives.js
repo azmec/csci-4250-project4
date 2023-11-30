@@ -186,3 +186,53 @@ function multiply(m, v) {
 
     	return vv;
 }
+
+/****************************************
+ * Definitions for the top wall trim.
+ ****************************************/
+
+/**
+ * Wall trim material definitions.
+ */
+const WALL_TRIM_MATERIAL_AMBIENT   = vec4(1.0, 1.0, 1.0, 1.0);
+const WALL_TRIM_MATERIAL_DIFFUSE   = vec4(1.0, 1.0, 1.0, 1.0);
+const WALL_TRIM_MATERIAL_SPECULAR  = vec4(0.1, 0.1, 0.1, 1.0);
+const WALL_TRIM_MATERIAL_SHININESS = 30.0;
+
+const NUM_WALL_TRIM_VERTICES = CUBE_FACES.length;
+
+/**
+ * Return the vertices composing the trim of the top of a wall.
+ */
+function generateWallTrimVerices() {
+	return CUBE_FACES;
+}
+
+/**
+ * Draw the wall-trim whose vertices begin at `offset`.
+ * @param {number} offset - The index in the global points array from which to
+ *                          begin drawing the wall-trim.
+ * @param {vec3}   t      - The vector by which to translate the wall-trim.
+ * @param {vec3}   r      - The vector by which to rotate the wall-trim.
+ * @param {vec3}   s      - The vector by which to scale the wall-trim.
+ */
+function drawWallTrim(offset, t, r, s) {
+	let [tx, ty, tz] = t;
+	let [theta, rx, ry, rz] = r;
+	let [sx, sy, sz] = s;
+
+	setMaterial(
+		WALL_TRIM_MATERIAL_AMBIENT, WALL_TRIM_MATERIAL_DIFFUSE, 
+		WALL_TRIM_MATERIAL_SPECULAR, WALL_TRIM_MATERIAL_SHININESS
+	);
+
+	matrixStack.push(modelViewMatrix);
+
+	modelViewMatrix = mult(modelViewMatrix, translate(tx, ty, tz));
+	modelViewMatrix = mult(modelViewMatrix, rotate(theta, rx, ry, rz));
+	modelViewMatrix = mult(modelViewMatrix, scale4(sx, sy, sz));
+	gl.uniformMatrix4fv(modelViewMatrixLoc, false, flatten(modelViewMatrix));
+	drawCube(offset, NO_TRANSLATE, NO_SCALE);
+
+	modelViewMatrix = matrixStack.pop();
+}
