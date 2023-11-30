@@ -238,6 +238,9 @@ function initWebGL() {
 	gl.uniform4fv(gl.getUniformLocation(program, "lightPosition"), flatten(LIGHT_POSTIION));
 }
 
+/**
+ * Initialize the keyboard controls for the HTML page.
+ */
 function initHtmlKeyControls() {
 	window.addEventListener("keydown", (event) => {
 		let code = event.code;
@@ -618,5 +621,4 @@ function render() {
 	drawCube(startIdx, vec3(-12, 40, -30), vec3(34, 4, 8));
 
 	modelViewMatrix = matrixStack.pop();
-
 }
